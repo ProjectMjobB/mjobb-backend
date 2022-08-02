@@ -11,6 +11,22 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     private static final String RESOURCE_ID = "mjobb-application";
 
+
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+            // other public endpoints of your API may be appended to this array
+    };
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId(RESOURCE_ID);
@@ -18,7 +34,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/oauth/**").permitAll().and()
-                .authorizeRequests().antMatchers("/art/**", "/permission/**/**", "/call/**/**").permitAll().anyRequest().authenticated();
+        http.csrf().disable().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().and()
+                .authorizeRequests().antMatchers("/api/**").permitAll().anyRequest().authenticated();
     }
 }
