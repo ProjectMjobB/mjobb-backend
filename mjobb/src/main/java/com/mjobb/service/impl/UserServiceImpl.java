@@ -1,9 +1,11 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.entity.User;
+import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.repository.UserRepository;
 import com.mjobb.request.SignUpRequest;
 import com.mjobb.service.UserService;
+import com.mjobb.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,5 +35,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(request.getPassword()));
 
         userRepository.save(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        String email = SecurityUtils.getCurrentUserEmail();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("Current user not found."));
     }
 }
