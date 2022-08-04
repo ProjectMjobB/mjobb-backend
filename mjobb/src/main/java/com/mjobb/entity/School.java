@@ -11,16 +11,13 @@ import javax.persistence.*;
 @Setter
 @Table
 public class School {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
     private String name;
-
     private Boolean isGraduate;
-
     private String graduateYear;
-
 
 }

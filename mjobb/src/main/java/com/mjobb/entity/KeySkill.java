@@ -15,8 +15,6 @@ public class KeySkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
     private String name;
-
 
 }

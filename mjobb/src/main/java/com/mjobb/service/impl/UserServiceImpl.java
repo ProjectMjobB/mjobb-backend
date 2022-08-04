@@ -1,13 +1,19 @@
 package com.mjobb.service.impl;
 
+import com.mjobb.dto.UserDto;
 import com.mjobb.entity.User;
+import com.mjobb.exception.UserAlreadyExistException;
 import com.mjobb.exception.UserNotFoundException;
+import com.mjobb.exception.WrongPasswordException;
 import com.mjobb.repository.UserRepository;
+import com.mjobb.request.ChangePasswordRequest;
 import com.mjobb.request.SignUpRequest;
 import com.mjobb.service.UserService;
+import com.mjobb.utils.PopulateUtils;
 import com.mjobb.utils.SecurityUtils;
+import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean existByEmail(String email) {
@@ -25,14 +31,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(SignUpRequest request) {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
+    public void registerUser(@NotNull SignUpRequest request) {
+        if (existByEmail(request.getEmail())){
+            throw new UserAlreadyExistException("There is an account with that email address: " + request.getEmail());
+        }
+
+
         User user = new User();
         user.setEmail(request.getEmail());
         user.setEnabled(true);
         user.setFirstName(request.getFirstname());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setPassword(encoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
     }
@@ -41,5 +51,30 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         String email = SecurityUtils.getCurrentUserEmail();
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("Current user not found."));
+    }
+
+    @Override
+    public void updateUser(UserDto userDto) {
+        User user = getCurrentUser();
+        PopulateUtils.copyNonNullProperties(userDto, user);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePassword(@NotNull ChangePasswordRequest changePasswordRequest) {
+        User user = getCurrentUser();
+        if (checkIfValidOldPassword(user, changePasswordRequest.getOldPassword())) {
+            throw new WrongPasswordException("Wrong Password");
+        }
+        if (!StringUtils.equals(changePasswordRequest.getNewPassword(), changePasswordRequest.getNewPasswordValidate())) {
+            throw new WrongPasswordException("Password does not match");
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 }

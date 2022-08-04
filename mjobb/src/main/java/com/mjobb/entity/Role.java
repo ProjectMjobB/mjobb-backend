@@ -8,11 +8,11 @@ import javax.persistence.*;
 @Table
 @Data
 public class Role {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
 
- }
+}
