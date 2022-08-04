@@ -24,7 +24,11 @@ public class User {
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
+    @Lob
+    private Byte[] profileImage;
+    private String country;
+    private String about;
+    private String contactInformation;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles;
