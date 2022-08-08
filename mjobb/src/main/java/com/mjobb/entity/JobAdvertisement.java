@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +25,7 @@ public class JobAdvertisement {
     private byte[] file;
     private String type;
     private String workingType;
+    @OneToMany
+    private List<Application> applications;
 
 }

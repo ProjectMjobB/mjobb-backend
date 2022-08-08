@@ -5,6 +5,8 @@ import com.mjobb.entity.User;
 import com.mjobb.request.ChangePasswordRequest;
 import com.mjobb.request.SignUpRequest;
 
+import java.util.List;
+
 public interface UserService {
 
     boolean existByEmail(String email);

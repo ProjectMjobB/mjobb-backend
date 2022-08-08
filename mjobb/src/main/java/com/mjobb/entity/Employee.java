@@ -22,8 +22,10 @@ public class Employee extends User {
     private BigDecimal currentSalary;
     private BigDecimal requestedSalary;
     @OneToMany
-    private List<WorkingArea> workingAreas;//job experience
+    private List<WorkingArea> workingAreas;
     @OneToMany
     private List<Language> languages;
+    @OneToMany
+    private List<Comment> comments;
 
 }
