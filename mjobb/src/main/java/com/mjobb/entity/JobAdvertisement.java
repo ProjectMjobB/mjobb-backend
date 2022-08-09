@@ -18,6 +18,8 @@ public class JobAdvertisement {
     @Column
     private Long id;
     private String title;
+    private String category;
+    private String address;
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
     private BigDecimal maximumSalary;
@@ -27,5 +29,7 @@ public class JobAdvertisement {
     private String workingType;
     @OneToMany
     private List<Application> applications;
+    @ManyToOne
+    private Company company;
 
 }

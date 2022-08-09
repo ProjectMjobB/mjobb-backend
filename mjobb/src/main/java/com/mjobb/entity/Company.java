@@ -5,19 +5,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table
 public class Company extends User {
 
     private String website;
     private Date foundationDate;
     @OneToOne
     private GeneralPoint generalPoint;
+    @OneToMany
+    private List<JobAdvertisement> jobs;
 
 }

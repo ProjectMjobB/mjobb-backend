@@ -90,6 +90,11 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
 
     private void isValidRegisterRole(String role) {
         if (RoleEnum.ADMIN.code().equals(role) || RoleEnum.MODERATOR.code().equals(role)) {

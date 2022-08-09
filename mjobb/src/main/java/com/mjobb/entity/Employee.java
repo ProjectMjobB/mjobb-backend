@@ -27,5 +27,7 @@ public class Employee extends User {
     private List<Language> languages;
     @OneToMany
     private List<Comment> comments;
+    @OneToMany
+    private List<JobAdvertisement> favoriteJobs;
 
 }

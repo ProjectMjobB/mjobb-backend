@@ -21,4 +21,6 @@ public interface UserService {
 
     boolean checkIfValidOldPassword(final User user, final String oldPassword);
 
+    void save(User user);
+
 }
