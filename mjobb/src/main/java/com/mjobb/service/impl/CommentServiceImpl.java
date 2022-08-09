@@ -3,7 +3,7 @@ package com.mjobb.service.impl;
 import com.mjobb.entity.Comment;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.User;
-import com.mjobb.repository.JobAdvertisementRepository;
+import com.mjobb.repository.CommentRepository;
 import com.mjobb.request.CommentRequest;
 import com.mjobb.service.CommentService;
 import com.mjobb.service.JobAdvertisementService;
@@ -21,6 +21,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserService userService;
     private final JobAdvertisementService jobAdvertisementService;
+    private final CommentRepository commentRepository;
 
 
     @Override
@@ -72,6 +73,22 @@ public class CommentServiceImpl implements CommentService {
         comments.add(comment);
         jobAdvertisement.setComments(comments);
         jobAdvertisementService.save(jobAdvertisement);
+    }
+
+    @Override
+    public List<Comment> pendingApprovalComments() {
+        return commentRepository.getAllByAccepted(false);
+    }
+
+    @Override
+    public void approveComments(List<Comment> comments) {
+        if (CollectionUtils.isEmpty(comments)) {
+            return;
+        }
+        comments.forEach(comment -> {
+            comment.setAccepted(true);
+            commentRepository.save(comment);
+        });
     }
 
 
