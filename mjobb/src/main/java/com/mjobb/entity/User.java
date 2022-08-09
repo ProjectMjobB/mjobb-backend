@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,6 +31,11 @@ public class User {
     private String country;
     private String about;
     private String contactInformation;
+    private Double generalPoint;
+    @OneToMany
+    private List<Comment> comments;
+    @OneToMany
+    private List<Comment> commentHistory;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles;

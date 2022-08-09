@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +17,6 @@ public class Company extends User {
 
     private String website;
     private Date foundationDate;
-    @OneToOne
-    private GeneralPoint generalPoint;
     @OneToMany
     private List<JobAdvertisement> jobs;
-
 }

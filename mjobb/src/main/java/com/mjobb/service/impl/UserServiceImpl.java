@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Current user not found."));
+    }
+
+    @Override
     public void updateUser(UserDto userDto) {
         User user = getCurrentUser();
         PopulateUtils.copyNonNullProperties(userDto, user);
