@@ -3,7 +3,9 @@ package com.mjobb.service.impl;
 
 import com.mjobb.entity.Role;
 import com.mjobb.entity.User;
+import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.UserRepository;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            if (BooleanUtils.isFalse(user.isEnabled())){
+                throw new WebServiceException(String.format("User '%s' blocked", email));
+            }
             Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
             for (Role role : user.getRoles()) {

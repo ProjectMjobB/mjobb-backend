@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -98,6 +99,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public void blockUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+        user.setEnabled(false);
+        save(user);
+    }
+
+    @Override
+    public void unblockUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+        user.setEnabled(true);
+        save(user);
+    }
+
+    @Override
+    public List<User> getBlockedUsers() {
+        return userRepository.findAllByEnabled(false);
+    }
+
+    @Override
+    public List<User> getAllActiveUsers() {
+        return userRepository.findAllByEnabled(true);
     }
 
 

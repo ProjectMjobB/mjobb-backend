@@ -25,4 +25,12 @@ public interface UserService {
 
     void save(User user);
 
+    void blockUser(Long userId);
+
+    void unblockUser(Long userId);
+
+    List<User> getBlockedUsers();
+
+    List<User> getAllActiveUsers();
+
 }

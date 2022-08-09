@@ -2,8 +2,10 @@ package com.mjobb.controller;
 
 import com.mjobb.entity.Comment;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.User;
 import com.mjobb.service.CommentService;
 import com.mjobb.service.JobAdvertisementService;
+import com.mjobb.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ public class AdminController {
 
     private final CommentService commentService;
     private final JobAdvertisementService jobAdvertisementService;
+    private final UserService userService;
 
     @GetMapping("comments/waiting")
     public ResponseEntity<List<Comment>> getWaitingComments() {
@@ -49,4 +52,28 @@ public class AdminController {
         jobAdvertisementService.rejectJobs(comments);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("users/block")
+    public ResponseEntity<List<User>> activeUsers() {
+        return ResponseEntity.ok(userService.getAllActiveUsers());
+    }
+
+    @GetMapping("users/blocked")
+    public ResponseEntity<List<User>> rejectUser() {
+        return ResponseEntity.ok(userService.getBlockedUsers());
+    }
+
+    @GetMapping("users/block")
+    public ResponseEntity<Void> blockUser(@RequestParam Long userId) {
+        userService.blockUser(userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("users/unblock")
+    public ResponseEntity<Void> unblockUser(@RequestParam Long userId) {
+        userService.unblockUser(userId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
