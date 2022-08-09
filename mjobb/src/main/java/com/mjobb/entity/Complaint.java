@@ -1,14 +1,15 @@
 package com.mjobb.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
-@Table
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +17,7 @@ public class Complaint {
     private Long id;
     private String reason;
     private String description;
-    @ManyToOne
-    private User complainant;
-    @ManyToOne
-    private User complainedOf;
+    private boolean accepted;
 
 
 }

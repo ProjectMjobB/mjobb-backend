@@ -7,7 +7,7 @@ public class CommentRequest {
 
     private String comment;
     private Long point;
-    private Long fromUserId;
+    private Long toUserId;
     private Long jobId;
 
 }

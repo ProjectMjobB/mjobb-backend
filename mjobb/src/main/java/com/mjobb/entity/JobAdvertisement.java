@@ -33,5 +33,7 @@ public class JobAdvertisement {
     private Company company;
     @OneToMany
     private List<Comment> comments;
+    @OneToMany
+    private List<Complaint> complaints;
 
 }

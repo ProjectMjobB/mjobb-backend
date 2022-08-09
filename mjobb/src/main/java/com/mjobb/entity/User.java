@@ -36,6 +36,11 @@ public class User {
     private List<Comment> comments;
     @OneToMany
     private List<Comment> commentHistory;
+    @OneToMany
+    private List<Complaint> complaints;
+    @OneToMany
+    private List<Complaint> complaintHistory;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles;

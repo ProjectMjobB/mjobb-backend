@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void userCommentToUser(CommentRequest request) {
         User fromUser = userService.getCurrentUser();
-        User toUser = userService.getUserById(request.getFromUserId());
+        User toUser = userService.getUserById(request.getToUserId());
         Comment comment = Comment.builder()
                 .comment(request.getComment())
                 .toUser(toUser)
