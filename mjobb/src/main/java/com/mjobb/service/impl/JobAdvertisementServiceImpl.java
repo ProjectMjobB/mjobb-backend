@@ -42,7 +42,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         Employee employee = (Employee) userService.getCurrentUser();
         List<JobAdvertisement> favoriteJobs = employee.getFavoriteJobs();
         if (CollectionUtils.isEmpty(favoriteJobs)) {
-           throw  new WebServiceException("User has no favorite jobs");
+            throw new WebServiceException("User has no favorite jobs");
         }
 
         JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Job not found this id: " + jobId));
@@ -61,6 +61,33 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     @Override
     public void save(JobAdvertisement jobAdvertisement) {
         jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
+    @Override
+    public List<JobAdvertisement> pendingApprovalJobs() {
+        return jobAdvertisementRepository.findAllByAccepted(false);
+    }
+
+    @Override
+    public void approveJobs(List<JobAdvertisement> jobs) {
+        if (CollectionUtils.isEmpty(jobs)) {
+            return;
+        }
+        jobs.forEach(jobAdvertisement -> {
+            jobAdvertisement.setAccepted(true);
+            jobAdvertisementRepository.save(jobAdvertisement);
+        });
+    }
+
+    @Override
+    public void rejectJobs(List<JobAdvertisement> jobs) {
+        if (CollectionUtils.isEmpty(jobs)) {
+            return;
+        }
+        jobs.forEach(jobAdvertisement -> {
+            jobAdvertisement.setAccepted(false);
+            jobAdvertisementRepository.save(jobAdvertisement);
+        });
     }
 
 }

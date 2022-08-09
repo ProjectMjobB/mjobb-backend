@@ -35,5 +35,6 @@ public class JobAdvertisement {
     private List<Comment> comments;
     @OneToMany
     private List<Complaint> complaints;
+    private boolean accepted;
 
 }
