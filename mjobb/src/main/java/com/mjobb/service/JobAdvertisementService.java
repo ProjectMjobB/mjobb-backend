@@ -12,12 +12,16 @@ public interface JobAdvertisementService {
     
     JobAdvertisement getJobAdvertisementById(Long jobId);
 
-    void save(JobAdvertisement jobAdvertisement);
+    JobAdvertisement save(JobAdvertisement jobAdvertisement);
 
     List<JobAdvertisement> pendingApprovalJobs();
 
     void approveJobs(List<JobAdvertisement> jobs);
 
     void rejectJobs(List<JobAdvertisement> jobs);
+
+    List<JobAdvertisement> getMyCreatedJobs();
+
+    List<JobAdvertisement> getMyOpenedJobs();
 
 }

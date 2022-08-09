@@ -1,17 +1,23 @@
 package com.mjobb.service.impl;
 
+import com.mjobb.entity.Company;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.User;
 import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.JobAdvertisementRepository;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
+import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,8 +65,20 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public void save(JobAdvertisement jobAdvertisement) {
-        jobAdvertisementRepository.save(jobAdvertisement);
+    public JobAdvertisement save(@NotNull JobAdvertisement jobAdvertisement) {
+        Date date = new Date();
+        if (Objects.isNull(jobAdvertisement.getCreatedDate())) {
+            jobAdvertisement.setCreatedDate(date);
+        } else {
+            Company company = jobAdvertisement.getCompany();
+            User user = userService.getCurrentUser();
+            if (!company.getId().equals(user.getId())) {
+                throw new WebServiceException("You are not authorized to perform this action");
+            }
+        }
+
+        jobAdvertisement.setUpdatedDate(date);
+        return jobAdvertisementRepository.save(jobAdvertisement);
     }
 
     @Override
@@ -89,5 +107,21 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             jobAdvertisementRepository.save(jobAdvertisement);
         });
     }
+
+    @Override
+    public List<JobAdvertisement> getMyCreatedJobs() {
+        Company company = (Company) userService.getCurrentUser();
+        return company.getJobs();
+    }
+
+    @Override
+    public List<JobAdvertisement> getMyOpenedJobs() {
+        List<JobAdvertisement> jobs = getMyCreatedJobs();
+        if (CollectionUtils.isEmpty(jobs)) {
+            throw new WebServiceException("Jobs not found");
+        }
+        return jobs.stream().filter(JobAdvertisement::isAccepted).collect(Collectors.toList());
+    }
+
 
 }

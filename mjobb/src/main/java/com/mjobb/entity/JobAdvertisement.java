@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -36,5 +37,7 @@ public class JobAdvertisement {
     @OneToMany
     private List<Complaint> complaints;
     private boolean accepted;
+    private Date createdDate;
+    private Date updatedDate;
 
 }
