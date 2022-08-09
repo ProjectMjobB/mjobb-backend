@@ -1,10 +1,11 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.dto.UserDto;
+import com.mjobb.entity.Role;
 import com.mjobb.entity.User;
-import com.mjobb.exception.UserAlreadyExistException;
-import com.mjobb.exception.UserNotFoundException;
-import com.mjobb.exception.WrongPasswordException;
+import com.mjobb.enums.RoleEnum;
+import com.mjobb.exception.*;
+import com.mjobb.repository.RoleRepository;
 import com.mjobb.repository.UserRepository;
 import com.mjobb.request.ChangePasswordRequest;
 import com.mjobb.request.SignUpRequest;
@@ -17,6 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     public boolean existByEmail(String email) {
@@ -32,10 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(@NotNull SignUpRequest request) {
-        if (existByEmail(request.getEmail())){
+        if (existByEmail(request.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: " + request.getEmail());
         }
-
+        isValidRegisterRole(request.getRole());
 
         User user = new User();
         user.setEmail(request.getEmail());
@@ -43,6 +48,13 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstname());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        String requestRole = StringUtils.isEmpty(request.getRole()) ? RoleEnum.EMPLOYEE.code() : request.getRole();
+
+        Role role = roleRepository.findByName(requestRole).orElseThrow(() -> new RoleNotFoundException("This role no found. -> " + RoleEnum.EMPLOYEE.code()));
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
 
         userRepository.save(user);
     }
@@ -76,5 +88,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
         return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+
+    private void isValidRegisterRole(String role) {
+        if (RoleEnum.ADMIN.code().equals(role) || RoleEnum.MODERATOR.code().equals(role)) {
+            throw new WebServiceException("This role cannot be registered.");
+        }
     }
 }

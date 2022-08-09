@@ -16,12 +16,8 @@ public class RegisterController {
 
     private final UserService userService;
 
-
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        if (userService.existByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Error: Username is already taken!");
-        }
         userService.registerUser(signUpRequest);
         return ResponseEntity.ok("User registered successfully!");
     }
