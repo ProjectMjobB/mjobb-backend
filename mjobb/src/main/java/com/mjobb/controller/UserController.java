@@ -25,20 +25,20 @@ public class UserController {
     private final ApplicationService applicationService;
     private final CustomModelMapper modelMapper;
 
-    @PostMapping("/update")
+    @PostMapping("update")
     public ResponseEntity<Void> updateUser(@RequestBody UserDto user) {
         userService.updateUser(user);
         return ResponseEntity.accepted().build();
     }
 
-    @PostMapping("/change-password")
+    @PostMapping("change-password")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         userService.changePassword(changePasswordRequest);
         return ResponseEntity.accepted().build();
     }
 
 
-    @GetMapping("/my-applications")
+    @GetMapping("my-applications")
     public ResponseEntity<List<ApplicationDto>> getJobApplications() {
         List<Application> applications = applicationService.findAllApplicationForEmployee((Employee) userService.getCurrentUser());
         return ResponseEntity.accepted().body(modelMapper.mapList(applications, ApplicationDto.class));

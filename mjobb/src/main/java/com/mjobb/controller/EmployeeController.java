@@ -21,7 +21,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final CustomModelMapper customModelMapper;
 
-    @GetMapping("/history/job-advertisements")
+    @GetMapping("history/job-advertisements")
     public ResponseEntity<List<JobAdvertisementDto>> getAppliedJobAdvertisementsForCurrentUser() {
         return ResponseEntity.accepted().body(customModelMapper.mapList(employeeService.getAppliedJobAdvertisementsForCurrentUser(), JobAdvertisementDto.class));
     }

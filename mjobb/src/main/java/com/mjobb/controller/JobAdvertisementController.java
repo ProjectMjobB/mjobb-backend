@@ -19,12 +19,12 @@ public class JobAdvertisementController {
     private final JobAdvertisementService jobAdvertisementService;
 
 
-    @GetMapping("/add/favorite{jobId}")
+    @GetMapping("add/favorite{jobId}")
     public ResponseEntity<Void> addFavoriteJobForCurrentUser(@PathVariable @NotNull Long jobId) {
         jobAdvertisementService.addFavoriteJobForCurrentUser(jobId);
         return ResponseEntity.accepted().build();
     }
-    @GetMapping("/delete/favorite{jobId}")
+    @GetMapping("delete/favorite{jobId}")
     public ResponseEntity<Void> deleteFavoriteJobForCurrentUser(@PathVariable @NotNull Long jobId) {
         jobAdvertisementService.deleteFavoriteJobForCurrentUser(jobId);
         return ResponseEntity.accepted().build();
