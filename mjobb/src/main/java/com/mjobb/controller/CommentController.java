@@ -1,6 +1,7 @@
 package com.mjobb.controller;
 
 import com.mjobb.request.CommentRequest;
+import com.mjobb.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @ApiOperation("Comments API")
 public class CommentController {
 
-    @PostMapping("user-to-user")
-    public ResponseEntity<Void> userCommentToCompany(@RequestBody CommentRequest request){
+    private final CommentService commentService;
 
+    @PostMapping("user-to-user")
+    public ResponseEntity<Void> userCommentToCompany(@RequestBody CommentRequest request) {
+        commentService.userCommentToUser(request);
         return ResponseEntity.ok().build();
     }
 
 
     @PostMapping("user-to-job")
-    public ResponseEntity<Void> userCommentToJob(@RequestBody CommentRequest request){
-
+    public ResponseEntity<Void> userCommentToJob(@RequestBody CommentRequest request) {
+        commentService.userCommentToJob(request);
         return ResponseEntity.ok().build();
     }
 

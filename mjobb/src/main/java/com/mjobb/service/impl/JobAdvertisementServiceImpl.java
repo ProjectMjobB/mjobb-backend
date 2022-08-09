@@ -53,4 +53,14 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         userService.save(employee);
     }
 
+    @Override
+    public JobAdvertisement getJobAdvertisementById(Long jobId) {
+        return jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Job not found this id: " + jobId));
+    }
+
+    @Override
+    public void save(JobAdvertisement jobAdvertisement) {
+        jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
 }

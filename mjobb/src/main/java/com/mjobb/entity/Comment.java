@@ -22,4 +22,6 @@ public class Comment {
     private User fromUser;
     @OneToOne
     private User toUser;
+    @OneToOne
+    private JobAdvertisement job;
 }

@@ -31,5 +31,7 @@ public class JobAdvertisement {
     private List<Application> applications;
     @ManyToOne
     private Company company;
+    @OneToMany
+    private List<Comment> comments;
 
 }
