@@ -1,10 +1,13 @@
 package com.mjobb.service.impl;
 
+import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.Company;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.User;
+import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.exception.WebServiceException;
+import com.mjobb.repository.CompanyRepository;
 import com.mjobb.repository.JobAdvertisementRepository;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
@@ -25,6 +28,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
 
     private final JobAdvertisementRepository jobAdvertisementRepository;
     private final UserService userService;
+    private final CompanyRepository companyRepository;
 
 
     @Override
@@ -70,7 +74,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         if (Objects.isNull(jobAdvertisement.getCreatedDate())) {
             jobAdvertisement.setCreatedDate(date);
         } else {
-            Company company = jobAdvertisement.getCompany();
+            User company = jobAdvertisement.getCompany();
             User user = userService.getCurrentUser();
             if (!company.getId().equals(user.getId())) {
                 throw new WebServiceException("You are not authorized to perform this action");
@@ -121,6 +125,26 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             throw new WebServiceException("Jobs not found");
         }
         return jobs.stream().filter(JobAdvertisement::isAccepted).collect(Collectors.toList());
+    }
+
+    @Override
+    public JobAdvertisement createJobAdvertisement(JobAdvertisementDto request) {
+        User user = userService.getCurrentUser();
+        Company company = companyRepository.findById(user.getId()).orElseThrow(() -> {
+            throw new UserNotFoundException("Company not found");
+        });
+        JobAdvertisement jobAdvertisement = JobAdvertisement.builder()
+                .title(request.getTitle())
+                .yearsOfExperience(request.getYearsOfExperience())
+                .minimumSalary(request.getMinimumSalary())
+                .maximumSalary(request.getMaximumSalary())
+                .file(request.getFile())
+                .type(request.getType())
+                .workingType(request.getWorkingType())
+                .accepted(false)
+                .build();
+        jobAdvertisement.setCompany(company);
+        return save(jobAdvertisement);
     }
 
 

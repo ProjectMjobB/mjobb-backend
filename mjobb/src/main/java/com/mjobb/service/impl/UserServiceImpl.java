@@ -1,6 +1,8 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.dto.UserDto;
+import com.mjobb.entity.Company;
+import com.mjobb.entity.Employee;
 import com.mjobb.entity.Role;
 import com.mjobb.entity.User;
 import com.mjobb.enums.RoleEnum;
@@ -42,15 +44,21 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistException("There is an account with that email address: " + request.getEmail());
         }
         isValidRegisterRole(request.getRole());
-
-        User user = new User();
+        String requestRole = StringUtils.isEmpty(request.getRole()) ? RoleEnum.EMPLOYEE.code() : request.getRole();
+        User user;
+        if (RoleEnum.EMPLOYEE.code().equals(requestRole)) {
+            user = new Employee();
+        } else if (RoleEnum.COMPANY.code().equals(requestRole)) {
+            user = new Company();
+        } else {
+            user = new User();
+        }
         user.setEmail(request.getEmail());
         user.setEnabled(true);
         user.setFirstName(request.getFirstname());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        String requestRole = StringUtils.isEmpty(request.getRole()) ? RoleEnum.EMPLOYEE.code() : request.getRole();
 
         Role role = roleRepository.findByName(requestRole).orElseThrow(() -> new RoleNotFoundException("This role no found. -> " + RoleEnum.EMPLOYEE.code()));
         Set<Role> roles = new HashSet<>();

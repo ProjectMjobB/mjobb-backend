@@ -1,8 +1,8 @@
 package com.mjobb.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobAdvertisement {
 
     @Id
@@ -30,7 +33,11 @@ public class JobAdvertisement {
     private String workingType;
     @OneToMany
     private List<Application> applications;
+
     @ManyToOne
+    @JoinTable(name = "company_jobs",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Company company;
     @OneToMany
     private List<Comment> comments;

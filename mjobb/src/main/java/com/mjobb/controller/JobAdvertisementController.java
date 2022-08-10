@@ -1,5 +1,6 @@
 package com.mjobb.controller;
 
+import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
@@ -36,7 +37,7 @@ public class JobAdvertisementController {
     public ResponseEntity<JobAdvertisement> updateJob(@RequestBody JobAdvertisement jobAdvertisement) {
         return ResponseEntity.ok(jobAdvertisementService.save(jobAdvertisement));
     }
-    
+
     @GetMapping("all")
     public ResponseEntity<List<JobAdvertisement>> getCurrentCompanyJobs() {
         return ResponseEntity.ok(jobAdvertisementService.getMyCreatedJobs());
@@ -45,6 +46,12 @@ public class JobAdvertisementController {
     @GetMapping("opened")
     public ResponseEntity<List<JobAdvertisement>> getCompanyApprovedJobs() {
         return ResponseEntity.ok(jobAdvertisementService.getMyOpenedJobs());
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<JobAdvertisement> createJobAdvertisement(@RequestBody JobAdvertisementDto job) {
+        jobAdvertisementService.createJobAdvertisement(job);
+        return ResponseEntity.ok().build();
     }
 
 

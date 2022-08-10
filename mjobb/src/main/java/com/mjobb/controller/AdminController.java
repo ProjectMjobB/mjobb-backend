@@ -53,7 +53,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("users/block")
+    @GetMapping("users/active")
     public ResponseEntity<List<User>> activeUsers() {
         return ResponseEntity.ok(userService.getAllActiveUsers());
     }

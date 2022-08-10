@@ -28,7 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/oauth/register"
     };
 
     @Override
@@ -39,8 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().
-                antMatchers("/**").authenticated();
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean

@@ -1,5 +1,6 @@
 package com.mjobb.service;
 
+import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.JobAdvertisement;
 
 import java.util.List;
@@ -23,5 +24,7 @@ public interface JobAdvertisementService {
     List<JobAdvertisement> getMyCreatedJobs();
 
     List<JobAdvertisement> getMyOpenedJobs();
+
+    JobAdvertisement createJobAdvertisement(JobAdvertisementDto jobAdvertisement);
 
 }
