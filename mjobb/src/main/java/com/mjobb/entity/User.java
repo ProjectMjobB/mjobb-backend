@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -33,16 +32,24 @@ public class User {
     private String contactInformation;
     private Double generalPoint;
     @OneToMany
+    @JoinTable(name = "user_comments",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "comment_id")})
     private List<Comment> comments;
     @OneToMany
     private List<Comment> commentHistory;
     @OneToMany
+    @JoinTable(name = "user_complaints",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "complaint_id")})
     private List<Complaint> complaints;
     @OneToMany
     private List<Complaint> complaintHistory;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     private boolean enabled;
 

@@ -4,9 +4,7 @@ package com.mjobb.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -29,5 +27,10 @@ public class Employee extends User {
     private List<Comment> comments;
     @OneToMany
     private List<JobAdvertisement> favoriteJobs;
+    @OneToMany
+    @JoinTable(name = "employee_applications",
+            joinColumns = {@JoinColumn(name = "employee_id")},
+            inverseJoinColumns = {@JoinColumn(name = "application_id")})
+    private List<Application> applications;
 
 }

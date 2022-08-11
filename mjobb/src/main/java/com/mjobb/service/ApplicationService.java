@@ -9,4 +9,6 @@ public interface ApplicationService {
 
     List<Application> findAllApplicationForEmployee(Employee employee);
 
+    void approveApplication(Application application);
+
 }

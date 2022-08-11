@@ -9,6 +9,7 @@ import com.mjobb.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,52 +25,61 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping("comments/waiting")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<List<Comment>> getWaitingComments() {
         return ResponseEntity.ok(commentService.pendingApprovalComments());
     }
 
 
     @PostMapping("comments/approve")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> approveComments(@RequestBody List<Comment> comments) {
         commentService.approveComments(comments);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("jobs/waiting")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<List<JobAdvertisement>> getWaitingJobs() {
         return ResponseEntity.ok(jobAdvertisementService.pendingApprovalJobs());
     }
 
 
     @PostMapping("jobs/approve")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> approveJobs(@RequestBody List<JobAdvertisement> comments) {
         jobAdvertisementService.approveJobs(comments);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("jobs/reject")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> rejectJobs(@RequestBody List<JobAdvertisement> comments) {
         jobAdvertisementService.rejectJobs(comments);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("users/active")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List<User>> activeUsers() {
         return ResponseEntity.ok(userService.getAllActiveUsers());
     }
 
     @GetMapping("users/blocked")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List<User>> rejectUser() {
         return ResponseEntity.ok(userService.getBlockedUsers());
     }
 
     @GetMapping("users/block")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Void> blockUser(@RequestParam Long userId) {
         userService.blockUser(userId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("users/unblock")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Void> unblockUser(@RequestParam Long userId) {
         userService.unblockUser(userId);
         return ResponseEntity.ok().build();

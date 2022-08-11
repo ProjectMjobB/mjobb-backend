@@ -10,7 +10,7 @@ public interface JobAdvertisementService {
     void addFavoriteJobForCurrentUser(Long jobId);
 
     void deleteFavoriteJobForCurrentUser(Long jobId);
-    
+
     JobAdvertisement getJobAdvertisementById(Long jobId);
 
     JobAdvertisement save(JobAdvertisement jobAdvertisement);
@@ -26,5 +26,7 @@ public interface JobAdvertisementService {
     List<JobAdvertisement> getMyOpenedJobs();
 
     JobAdvertisement createJobAdvertisement(JobAdvertisementDto jobAdvertisement);
+
+    JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
 
 }

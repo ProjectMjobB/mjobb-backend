@@ -1,12 +1,10 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.dto.JobAdvertisementDto;
-import com.mjobb.entity.Company;
-import com.mjobb.entity.Employee;
-import com.mjobb.entity.JobAdvertisement;
-import com.mjobb.entity.User;
+import com.mjobb.entity.*;
 import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.exception.WebServiceException;
+import com.mjobb.repository.ApplicationRepository;
 import com.mjobb.repository.CompanyRepository;
 import com.mjobb.repository.JobAdvertisementRepository;
 import com.mjobb.service.JobAdvertisementService;
@@ -29,6 +27,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final JobAdvertisementRepository jobAdvertisementRepository;
     private final UserService userService;
     private final CompanyRepository companyRepository;
+    private final ApplicationRepository applicationRepository;
 
 
     @Override
@@ -96,8 +95,11 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             return;
         }
         jobs.forEach(jobAdvertisement -> {
-            jobAdvertisement.setAccepted(true);
-            jobAdvertisementRepository.save(jobAdvertisement);
+            JobAdvertisement job = jobAdvertisementRepository.findById(jobAdvertisement.getId()).orElseThrow(() -> {
+                throw new WebServiceException("Job can not update");
+            });
+            job.setAccepted(true);
+            jobAdvertisementRepository.save(job);
         });
     }
 
@@ -145,6 +147,24 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                 .build();
         jobAdvertisement.setCompany(company);
         return save(jobAdvertisement);
+    }
+
+    @Override
+    public JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement) {
+        Employee employee = (Employee) userService.getCurrentUser();
+        JobAdvertisement job = jobAdvertisementRepository.findById(jobAdvertisement.getId()).orElseThrow(() -> {
+            throw new WebServiceException("Job not found");
+        });
+
+        Application application = Application.builder()
+                .jobAdvertisement(job)
+                .employee(employee)
+                .build();
+
+
+        applicationRepository.save(application);
+
+        return job;
     }
 
 

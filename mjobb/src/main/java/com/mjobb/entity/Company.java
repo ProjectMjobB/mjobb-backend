@@ -20,6 +20,6 @@ public class Company extends User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "company_jobs",
             joinColumns = {@JoinColumn(name = "company_id")},
-    inverseJoinColumns = {@JoinColumn(name = "job_advertisement_id")})
+            inverseJoinColumns = {@JoinColumn(name = "job_advertisement_id")})
     private List<JobAdvertisement> jobs;
 }

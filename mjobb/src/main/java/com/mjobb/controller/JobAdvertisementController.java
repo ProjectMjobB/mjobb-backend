@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +22,14 @@ public class JobAdvertisementController {
 
 
     @GetMapping("add/favorite")
+    @Secured({"ROLE_EMPLOYEE"})
     public ResponseEntity<Void> addFavoriteJobForCurrentUser(@RequestParam @NotNull Long jobId) {
         jobAdvertisementService.addFavoriteJobForCurrentUser(jobId);
         return ResponseEntity.accepted().build();
     }
 
     @GetMapping("delete/favorite")
+    @Secured({"ROLE_EMPLOYEE"})
     public ResponseEntity<Void> deleteFavoriteJobForCurrentUser(@RequestParam @NotNull Long jobId) {
         jobAdvertisementService.deleteFavoriteJobForCurrentUser(jobId);
         return ResponseEntity.accepted().build();
@@ -34,25 +37,34 @@ public class JobAdvertisementController {
 
 
     @PostMapping("update")
+    @Secured({"ROLE_COMPANY"})
     public ResponseEntity<JobAdvertisement> updateJob(@RequestBody JobAdvertisement jobAdvertisement) {
         return ResponseEntity.ok(jobAdvertisementService.save(jobAdvertisement));
     }
 
     @GetMapping("all")
+    @Secured({"ROLE_COMPANY"})
     public ResponseEntity<List<JobAdvertisement>> getCurrentCompanyJobs() {
         return ResponseEntity.ok(jobAdvertisementService.getMyCreatedJobs());
     }
 
     @GetMapping("opened")
+    @Secured({"ROLE_COMPANY"})
     public ResponseEntity<List<JobAdvertisement>> getCompanyApprovedJobs() {
         return ResponseEntity.ok(jobAdvertisementService.getMyOpenedJobs());
     }
 
     @PostMapping("create")
+    @Secured({"ROLE_COMPANY"})
     public ResponseEntity<JobAdvertisement> createJobAdvertisement(@RequestBody JobAdvertisementDto job) {
-        jobAdvertisementService.createJobAdvertisement(job);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(jobAdvertisementService.createJobAdvertisement(job));
     }
 
+
+    @PostMapping("apply")
+    @Secured("ROLE_EMPLOYEE")
+    public ResponseEntity<JobAdvertisement> applyJob(@RequestBody JobAdvertisement jobAdvertisement) {
+        return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(jobAdvertisement));
+    }
 
 }

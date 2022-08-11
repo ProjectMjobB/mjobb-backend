@@ -5,6 +5,7 @@ import com.mjobb.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("user-to-user")
+    @Secured({"ROLE_EMPLOYEE", "ROLE_COMPANY"})
     public ResponseEntity<Void> userCommentToCompany(@RequestBody CommentRequest request) {
         commentService.userCommentToUser(request);
         return ResponseEntity.ok().build();
@@ -26,6 +28,7 @@ public class CommentController {
 
 
     @PostMapping("user-to-job")
+    @Secured({"ROLE_EMPLOYEE"})
     public ResponseEntity<Void> userCommentToJob(@RequestBody CommentRequest request) {
         commentService.userCommentToJob(request);
         return ResponseEntity.ok().build();

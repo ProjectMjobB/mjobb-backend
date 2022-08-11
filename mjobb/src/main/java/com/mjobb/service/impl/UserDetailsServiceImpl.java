@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (BooleanUtils.isFalse(user.isEnabled())){
+            if (BooleanUtils.isFalse(user.isEnabled())) {
                 throw new WebServiceException(String.format("User '%s' blocked", email));
             }
             Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();

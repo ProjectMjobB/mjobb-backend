@@ -19,4 +19,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> findAllApplicationForEmployee(Employee employee) {
         return applicationRepository.findAllByEmployee(employee);
     }
+
+    @Override
+    public void approveApplication(Application application) {
+        application.setAccepted(true);
+        applicationRepository.save(application);
+    }
 }

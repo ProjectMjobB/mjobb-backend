@@ -31,7 +31,11 @@ public class JobAdvertisement {
     private byte[] file;
     private String type;
     private String workingType;
+    @JsonIgnore
     @OneToMany
+    @JoinTable(name = "job_applications",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "application_id")})
     private List<Application> applications;
 
     @ManyToOne
@@ -40,8 +44,14 @@ public class JobAdvertisement {
             inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Company company;
     @OneToMany
+    @JoinTable(name = "job_comments",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "comment_id")})
     private List<Comment> comments;
     @OneToMany
+    @JoinTable(name = "job_complaints",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "complaint_id")})
     private List<Complaint> complaints;
     private boolean accepted;
     private Date createdDate;

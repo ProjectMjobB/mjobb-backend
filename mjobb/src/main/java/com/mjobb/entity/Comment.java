@@ -18,11 +18,14 @@ public class Comment {
     private Long id;
     private String comment;
     private Long point;
-    @OneToOne
+    @ManyToOne
     private User fromUser;
-    @OneToOne
+    @ManyToOne
     private User toUser;
-    @OneToOne
+    @ManyToOne
+    @JoinTable(name = "job_comments",
+            joinColumns = {@JoinColumn(name = "comment_id")},
+            inverseJoinColumns = {@JoinColumn(name = "job_advertisement_id")})
     private JobAdvertisement job;
     private boolean accepted;
 }

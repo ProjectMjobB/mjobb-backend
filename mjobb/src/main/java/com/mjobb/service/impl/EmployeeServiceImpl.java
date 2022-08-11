@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<JobAdvertisement> getAppliedJobAdvertisementsForCurrentUser() {
         Employee user = (Employee) userService.getCurrentUser();
         List<Application> applications = applicationRepository.findAllByEmployee(user);
-        if (CollectionUtils.isEmpty(applications)){
+        if (CollectionUtils.isEmpty(applications)) {
             throw new WebServiceException("The user has no job applications.");
         }
         return applications.stream().map(Application::getJobAdvertisement).toList();
