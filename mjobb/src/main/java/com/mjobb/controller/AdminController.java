@@ -86,4 +86,24 @@ public class AdminController {
     }
 
 
+    @GetMapping("user/list")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+
+    @GetMapping("/user/promote-moderator")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<Void> makeModerator(@RequestParam Long userId) {
+        userService.promoteToModerator(userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user/promote-user")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<Void> makeUser(@RequestParam Long userId) {
+        userService.promoteToEmployee(userId);
+        return ResponseEntity.ok().build();
+    }
 }

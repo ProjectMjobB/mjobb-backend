@@ -33,4 +33,10 @@ public interface UserService {
 
     List<User> getAllActiveUsers();
 
+    List<User> getAllUsers();
+
+    void promoteToModerator(Long userId);
+
+    void promoteToEmployee(Long userId);
+
 }

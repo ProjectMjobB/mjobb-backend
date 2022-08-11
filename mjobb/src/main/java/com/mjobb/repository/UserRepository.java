@@ -1,5 +1,6 @@
 package com.mjobb.repository;
 
+import com.mjobb.entity.Role;
 import com.mjobb.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     List<User> findAllByEnabled(boolean enabled);
+
+    List<User> findAllByRolesNot(Role role);
 }

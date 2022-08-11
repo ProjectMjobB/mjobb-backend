@@ -133,6 +133,44 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByEnabled(true);
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        Role adminRole = roleRepository.findByName(RoleEnum.ADMIN.code()).orElseThrow(() -> {
+            throw new WebServiceException("ADMIN role not found");
+        });
+        return userRepository.findAllByRolesNot(adminRole);
+    }
+
+    @Override
+    public void promoteToModerator(Long userId) {
+        Role moderator = roleRepository.findByName(RoleEnum.MODERATOR.code()).orElseThrow(() -> {
+            throw new WebServiceException("MODERATOR role not found");
+        });
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(moderator);
+        user.setRoles(roles);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void promoteToEmployee(Long userId) {
+        Role employee = roleRepository.findByName(RoleEnum.EMPLOYEE.code()).orElseThrow(() -> {
+            throw new WebServiceException("EMPLOYEE role not found");
+        });
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(employee);
+        user.setRoles(roles);
+        userRepository.save(user);
+    }
+
 
     private void isValidRegisterRole(String role) {
         if (RoleEnum.ADMIN.code().equals(role) || RoleEnum.MODERATOR.code().equals(role)) {
