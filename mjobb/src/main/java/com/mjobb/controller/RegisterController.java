@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/oauth/register")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class RegisterController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid SignUpRequest signUpRequest) {
         userService.registerUser(signUpRequest);
         return ResponseEntity.ok("User registered successfully!");
     }
