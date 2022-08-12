@@ -28,6 +28,7 @@ public class User {
     @Lob
     private Byte[] profileImage;
     private String country;
+    private String city;
     private String about;
     private String contactInformation;
     private Double generalPoint;

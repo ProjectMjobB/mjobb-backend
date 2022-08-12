@@ -31,6 +31,8 @@ public class JobAdvertisement {
     private byte[] file;
     private String type;
     private String workingType;
+    private String country;
+    private String city;
     @JsonIgnore
     @OneToMany
     @JoinTable(name = "job_applications",
@@ -56,5 +58,11 @@ public class JobAdvertisement {
     private boolean accepted;
     private Date createdDate;
     private Date updatedDate;
+    @OneToMany
+    @JoinTable(name = "job_tags",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    private List<Tag> tags;
+
 
 }
