@@ -11,21 +11,6 @@
           </list>
         </option>
         <option name="isSkipTests" value="true" />
-        <option name="projectsToBuild">
-          <list>
-            <ProjectToBuild>
-              <option name="displayName" value="mjobb" />
-              <option name="mavenArtifact">
-                <MavenArtifact>
-                  <option name="groupId" value="com.mjobb" />
-                  <option name="artifactId" value="mjobb" />
-                  <option name="version" value="0.0.1-SNAPSHOT" />
-                </MavenArtifact>
-              </option>
-              <option name="projectDictionary" value="$PROJECT_DIR$/mjobb" />
-            </ProjectToBuild>
-          </list>
-        </option>
       </ExecutionSettings>
     </option>
     <option name="goalsHistory">

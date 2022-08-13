@@ -1,8 +1,0 @@
-{
-  "name": "spring-service-backend",
-  "buildpacks": [
-    {
-      "url": "heroku/maven"
-    }
-  ]
-}
