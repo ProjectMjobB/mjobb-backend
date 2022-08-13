@@ -7,7 +7,7 @@
         <option name="goals">
           <list>
             <option value="clean" />
-            <option value="install" />
+            <option value="package" />
           </list>
         </option>
         <option name="isSkipTests" value="true" />
@@ -32,6 +32,10 @@
       <History>
         <option name="items">
           <list>
+            <option value="clean package" />
+            <option value="java $JAVA_OPTS -jar target/*jar" />
+            <option value="java $JAVA_OPTS -jar target/*war" />
+            <option value="mvn install" />
             <option value="clean install" />
           </list>
         </option>
