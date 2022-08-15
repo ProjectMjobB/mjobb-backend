@@ -54,7 +54,13 @@ public class UserController {
 
 
     @GetMapping("current-user")
-    public ResponseEntity<User> getCurrentUser(){
+    public ResponseEntity<User> getCurrentUser() {
         return ResponseEntity.accepted().body(userService.getCurrentUser());
+    }
+
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        return ResponseEntity.accepted().body(userService.getUserById(userId));
     }
 }
