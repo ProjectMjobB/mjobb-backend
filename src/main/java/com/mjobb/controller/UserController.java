@@ -56,4 +56,8 @@ public class UserController {
     public ResponseEntity<User> getCurrentUser(){
         return ResponseEntity.accepted().body(userService.getCurrentUser());
     }
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        return ResponseEntity.accepted().body(userService.getUserById(userId));
+    }
 }
