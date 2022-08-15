@@ -4,6 +4,7 @@ import com.mjobb.dto.UserDto;
 import com.mjobb.entity.Application;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.User;
 import com.mjobb.request.ChangePasswordRequest;
 import com.mjobb.service.ApplicationService;
 import com.mjobb.service.UserService;
@@ -51,4 +52,8 @@ public class UserController {
         return ResponseEntity.accepted().body(((Employee) userService.getCurrentUser()).getFavoriteJobs());
     }
 
+    @GetMapping("current-user")
+    public ResponseEntity<User> getCurrentUser(){
+        return ResponseEntity.accepted().body(userService.getCurrentUser());
+    }
 }
