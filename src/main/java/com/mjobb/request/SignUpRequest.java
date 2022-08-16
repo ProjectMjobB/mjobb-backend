@@ -14,7 +14,6 @@ public class SignUpRequest {
     private String password;
     @NotBlank(message = "Firstname is mandatory")
     private String firstname;
-    @NotBlank(message = "Surname is mandatory")
     private String surname;
     @Pattern(regexp = "^0?(\\d{10})", message = "Phone number can only be numbers ")
     private String phoneNumber;
