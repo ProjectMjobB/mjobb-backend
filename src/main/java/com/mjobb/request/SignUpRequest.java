@@ -10,14 +10,13 @@ public class SignUpRequest {
     @NotBlank(message = "Email is mandatory")
     @Email
     private String email;
-    @Size(min = 6, max = 15)
+    @Size(min = 3, max = 30, message = "Password must be between 3 and 30 characters")
     private String password;
     @NotBlank(message = "Firstname is mandatory")
     private String firstname;
     @NotBlank(message = "Surname is mandatory")
     private String surname;
-    @Pattern(regexp = "^1?(\\d{10})", message = "Phone number can only be numbers ")
-    @Size(min = 10, max = 11)
+    @Pattern(regexp = "^0?(\\d{10})", message = "Phone number can only be numbers ")
     private String phoneNumber;
     private String role;
 }
