@@ -8,8 +8,10 @@ import com.mjobb.entity.User;
 import com.mjobb.request.ChangePasswordRequest;
 import com.mjobb.service.ApplicationService;
 import com.mjobb.service.UserService;
+import com.sun.net.httpserver.Authenticator;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +28,16 @@ public class UserController {
     private final ApplicationService applicationService;
 
     @PostMapping("update")
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto user) {
+    public ResponseEntity<User> updateUser(@RequestBody UserDto user) {
         userService.updateUser(user);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(userService.getUserById(userService.getCurrentUser().getId()));
     }
 
     @PostMapping("change-password")
     @Secured({"ROLE_EMPLOYEE", "ROLE_ADMIN", "ROLE_COMPANY", "ROLE_MODERATOR"})
-    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         userService.changePassword(changePasswordRequest);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok("Password changed successfully!");
     }
 
 
