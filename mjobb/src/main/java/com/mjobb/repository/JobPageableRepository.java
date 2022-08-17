@@ -1,5 +1,6 @@
 package com.mjobb.repository;
 
+import com.mjobb.entity.Category;
 import com.mjobb.entity.JobAdvertisement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,5 +11,5 @@ public interface JobPageableRepository extends PagingAndSortingRepository<JobAdv
 
     Page<JobAdvertisement> findAllByAccepted(boolean accepted, Pageable pageable);
 
-    Page<JobAdvertisement> findAllByTitleContainsIgnoreCaseOrCategoryContainsIgnoreCaseOrAddressContainsIgnoreCaseOrTypeContainsIgnoreCaseAndAccepted(String title, String category, String address, String type, boolean accepted, Pageable pageable);
+    Page<JobAdvertisement> findAllByTitleContainsIgnoreCaseOrAddressContainsIgnoreCaseOrTypeContainsIgnoreCaseAndAccepted(String title, String address, String type, boolean accepted, Pageable pageable);
 }

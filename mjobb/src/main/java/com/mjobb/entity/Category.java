@@ -13,18 +13,16 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
     private String name;
     @ManyToMany
-    @JoinTable(name = "job_tags",
-            joinColumns = {@JoinColumn(name = "tag_id")},
+    @JoinTable(name = "job_categories",
+            joinColumns = {@JoinColumn(name = "category_id")},
             inverseJoinColumns = {@JoinColumn(name = "job_advertisement_id")})
-    private
     List<JobAdvertisement> jobs;
-
-
 }

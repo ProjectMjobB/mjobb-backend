@@ -22,7 +22,6 @@ public class JobAdvertisement {
     @Column
     private Long id;
     private String title;
-    private String category;
     private String address;
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
@@ -58,11 +57,19 @@ public class JobAdvertisement {
     private boolean accepted;
     private Date createdDate;
     private Date updatedDate;
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "job_tags",
             joinColumns = {@JoinColumn(name = "job_advertisement_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private List<Tag> tags;
+
+    @ManyToMany
+    @JoinTable(name = "job_categories",
+            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+    private List<Category> categories;
+
+
 
 
 }

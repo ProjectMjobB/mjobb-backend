@@ -1,6 +1,7 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.entity.Tag;
+import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.TagRepository;
 import com.mjobb.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTag(Tag tag) {
         tagRepository.delete(tag);
+    }
+
+    @Override
+    public Tag getTagById(Long id) {
+        return tagRepository.findById(id).orElseThrow(() -> new WebServiceException("Tag not found this id: " + id));
     }
 }
