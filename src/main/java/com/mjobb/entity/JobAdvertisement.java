@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -15,14 +16,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobAdvertisement {
+public class JobAdvertisement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
     private String title;
-    private String category;
     private String address;
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
@@ -58,11 +58,14 @@ public class JobAdvertisement {
     private boolean accepted;
     private Date createdDate;
     private Date updatedDate;
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "job_tags",
             joinColumns = {@JoinColumn(name = "job_advertisement_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private List<Tag> tags;
 
+    @ManyToOne
+    @JoinColumn(name="category_id", nullable=false)
+    private Category category;
 
 }

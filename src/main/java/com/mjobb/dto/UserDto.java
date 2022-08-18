@@ -22,3 +22,5 @@ public class UserDto {
     @ApiModelProperty(notes = "User contact", example = "User contact information")
     private String contactInformation;
 }
+
+

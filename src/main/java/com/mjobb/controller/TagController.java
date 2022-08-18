@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import com.mjobb.entity.Category;
+import com.mjobb.entity.JobAdvertisement;
 
 import java.util.List;
 
@@ -36,5 +38,10 @@ public class TagController {
     public ResponseEntity<Void> deleteTag(@RequestBody Tag tag) {
         tagService.deleteTag(tag);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/get-by-id")
+    public ResponseEntity<List<JobAdvertisement>> getJobsFromCategory(@RequestParam Long id) {
+        Tag tag = tagService.getTagById(id);
+        return ResponseEntity.ok(tag.getJobs());
     }
 }

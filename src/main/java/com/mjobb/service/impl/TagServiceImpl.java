@@ -5,6 +5,7 @@ import com.mjobb.repository.TagRepository;
 import com.mjobb.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.mjobb.exception.WebServiceException;
 
 import java.util.List;
 
@@ -27,5 +28,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTag(Tag tag) {
         tagRepository.delete(tag);
+    }
+    @Override
+    public Tag getTagById(Long id) {
+        return tagRepository.findById(id).orElseThrow(() -> new WebServiceException("Tag not found this id: " + id));
     }
 }

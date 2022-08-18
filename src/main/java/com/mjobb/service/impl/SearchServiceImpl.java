@@ -17,8 +17,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Page<JobAdvertisement> searchJobs(String query, Pageable pageable) {
-        return jobPageableRepository.findAllByTitleContainsIgnoreCaseOrCategoryContainsIgnoreCaseOrAddressContainsIgnoreCaseOrTypeContainsIgnoreCaseAndAccepted(query, query, query, query, true, pageable);
-    }
+        return jobPageableRepository.findAllByTitleContainsIgnoreCaseOrAddressContainsIgnoreCaseOrTypeContainsIgnoreCaseAndAccepted(query, query, query, true, pageable);    }
 
     @Override
     public Page<JobAdvertisement> activeJobs(Pageable pageable) {
