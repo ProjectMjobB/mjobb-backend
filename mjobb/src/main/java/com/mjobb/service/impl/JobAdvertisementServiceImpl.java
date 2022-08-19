@@ -167,5 +167,23 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return job;
     }
 
+    @Override
+    public List<Employee> getEmployeesByAppliedJob(Long jobId) {
+
+        JobAdvertisement job = getJobAdvertisementById(jobId);
+        List<Application> applications = job.getApplications();
+        if (CollectionUtils.isEmpty(applications)) {
+            throw new WebServiceException("No applications for this job");
+        }
+
+        return applications.stream().map(Application::getEmployee).toList();
+    }
+
+    @Override
+    public void deleteJobAdvertisement(Long jobId) {
+        JobAdvertisement jobAdvertisement = getJobAdvertisementById(jobId);
+        jobAdvertisementRepository.delete(jobAdvertisement);
+    }
+
 
 }

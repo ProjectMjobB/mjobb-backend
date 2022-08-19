@@ -1,6 +1,7 @@
 package com.mjobb.service;
 
 import com.mjobb.dto.JobAdvertisementDto;
+import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
 
 import java.util.List;
@@ -28,5 +29,9 @@ public interface JobAdvertisementService {
     JobAdvertisement createJobAdvertisement(JobAdvertisementDto jobAdvertisement);
 
     JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
+
+    List<Employee> getEmployeesByAppliedJob(Long jobId);
+
+    void deleteJobAdvertisement(Long jobId);
 
 }

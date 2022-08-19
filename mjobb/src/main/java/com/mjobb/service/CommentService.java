@@ -16,4 +16,6 @@ public interface CommentService {
 
     void approveComments(List<Comment> comments);
 
+    void rejectComments(List<Comment> comments);
+
 }

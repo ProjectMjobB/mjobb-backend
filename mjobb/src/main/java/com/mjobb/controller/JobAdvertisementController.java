@@ -1,6 +1,8 @@
 package com.mjobb.controller;
 
 import com.mjobb.dto.JobAdvertisementDto;
+import com.mjobb.entity.Application;
+import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
@@ -67,4 +69,17 @@ public class JobAdvertisementController {
         return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(jobAdvertisement));
     }
 
+    @GetMapping("/applied-users")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<List<Employee>> getApplications(@RequestParam Long id) {
+        return ResponseEntity.ok(jobAdvertisementService.getEmployeesByAppliedJob(id));
+    }
+
+
+    @GetMapping("/delete")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<Void> deleteJob(@RequestParam Long id) {
+        jobAdvertisementService.deleteJobAdvertisement(id);
+        return ResponseEntity.ok().build();
+    }
 }
