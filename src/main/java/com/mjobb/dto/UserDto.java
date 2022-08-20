@@ -21,8 +21,15 @@ public class UserDto {
     private String about;
     @ApiModelProperty(notes = "User contact", example = "User contact information")
     private String contactInformation;
-    @ApiModelProperty(notes = "Company city", example = "User contact information", required = false)
+    @ApiModelProperty(notes = "City", example = "User city information", required = false)
     private String city;
+    @ApiModelProperty(notes = "Company website", example = "User website information", required = false)
+    private String website;
+    @ApiModelProperty(notes = "Company fd", example = "User fd information", required = false)
+    private String foundationDate;
+
+    @ApiModelProperty(notes = "Company point", example = "User point information", required = false)
+    private Double generalPoint;
 }
 
 
