@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -83,6 +84,9 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserDto userDto) {
         User user = getCurrentUser();
         PopulateUtils.copyNonNullProperties(userDto, user);
+        if (Objects.nonNull(userDto.getProfileImage())){
+            user.setProfileImage(user.getProfileImage());
+        }
         userRepository.save(user);
     }
 
