@@ -21,4 +21,6 @@ public class UserDto {
     private String about;
     @ApiModelProperty(notes = "User contact", example = "User contact information")
     private String contactInformation;
+    @ApiModelProperty(notes = "Company city", example = "User contact information", required = false)
+    private String city;
 }
