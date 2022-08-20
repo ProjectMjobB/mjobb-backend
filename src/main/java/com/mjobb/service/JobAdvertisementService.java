@@ -4,7 +4,7 @@ import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.JobAdvertisement;
 
 import java.util.List;
-
+import com.mjobb.entity.Employee;
 public interface JobAdvertisementService {
 
     void addFavoriteJobForCurrentUser(Long jobId);
@@ -28,5 +28,8 @@ public interface JobAdvertisementService {
     JobAdvertisement createJobAdvertisement(JobAdvertisementDto jobAdvertisement);
 
     JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
+    List<Employee> getEmployeesByAppliedJob(Long jobId);
+
+    void deleteJobAdvertisement(Long jobId);
 
 }

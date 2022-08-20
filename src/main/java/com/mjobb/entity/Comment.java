@@ -28,4 +28,5 @@ public class Comment {
             inverseJoinColumns = {@JoinColumn(name = "job_advertisement_id")})
     private JobAdvertisement job;
     private boolean accepted;
+    private boolean rejected;
 }

@@ -77,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> pendingApprovalComments() {
-        return commentRepository.getAllByAccepted(false);
+        return commentRepository.getAllByAcceptedAndRejected(false, false);
     }
 
     @Override
@@ -91,6 +91,19 @@ public class CommentServiceImpl implements CommentService {
         });
     }
 
+    @Override
+    public void rejectComments(List<Comment> comments) {
+        if (CollectionUtils.isEmpty(comments)) {
+            return;
+        }
+
+        comments.forEach(comment -> {
+                    comment = commentRepository.findById(comment.getId()).orElseThrow();
+                    comment.setRejected(true);
+                    commentRepository.save(comment);
+                }
+        );
+    }
 
     private void calculateGeneralPoint(User user) {
         if (CollectionUtils.isEmpty(user.getComments())) {
@@ -103,4 +116,5 @@ public class CommentServiceImpl implements CommentService {
         int count = comments.size();
         user.setGeneralPoint((double) (total / count));
     }
+
 }

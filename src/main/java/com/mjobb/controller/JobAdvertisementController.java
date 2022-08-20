@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.List;import com.mjobb.entity.Application;
+import com.mjobb.entity.Employee;
 
 @RestController
 @RequestMapping("/api/v1.0/jobs/")
@@ -65,6 +66,20 @@ public class JobAdvertisementController {
     @Secured("ROLE_EMPLOYEE")
     public ResponseEntity<JobAdvertisement> applyJob(@RequestBody JobAdvertisement jobAdvertisement) {
         return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(jobAdvertisement));
+    }
+
+    @GetMapping("/applied-users")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<List<Employee>> getApplications(@RequestParam Long id) {
+        return ResponseEntity.ok(jobAdvertisementService.getEmployeesByAppliedJob(id));
+    }
+
+
+    @GetMapping("/delete")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<Void> deleteJob(@RequestParam Long id) {
+        jobAdvertisementService.deleteJobAdvertisement(id);
+        return ResponseEntity.ok().build();
     }
 
 }

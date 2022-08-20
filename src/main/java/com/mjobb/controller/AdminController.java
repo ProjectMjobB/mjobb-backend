@@ -38,6 +38,13 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("comments/reject")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<Void> rejectComments(@RequestBody List<Comment> comments) {
+        commentService.rejectComments(comments);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("jobs/waiting")
     @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<List<JobAdvertisement>> getWaitingJobs() {
