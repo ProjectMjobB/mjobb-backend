@@ -9,8 +9,8 @@ import lombok.Setter;
 public class UserDto {
     @ApiModelProperty(notes = "User first name", example = "Alex")
     private String firstname;
-    @ApiModelProperty(notes = "User last name", example = "de Souza")
-    private String lastName;
+    @ApiModelProperty(notes = "User surname", example = "de Souza")
+    private String surname;
     @ApiModelProperty(notes = "User phone number", example = "5553332211")
     private String phoneNumber;
     @ApiModelProperty(notes = "User profile image", example = "image Bytes")
