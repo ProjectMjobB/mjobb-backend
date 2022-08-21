@@ -48,7 +48,7 @@ public class CategoryController {
         return ResponseEntity.ok(category.getJobAdvertisements());
     }
     @GetMapping("/popular")
-    public Optional<List<Category>> getPopularCategories(){
-        return categoryService.getPopularCategories();
+    public ResponseEntity<?> getPopularCategories(){
+        return ResponseEntity.ok(categoryService.getPopularCategories());
     }
 }
