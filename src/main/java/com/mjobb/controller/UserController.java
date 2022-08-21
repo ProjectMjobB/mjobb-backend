@@ -36,12 +36,9 @@ public class UserController {
     }
 
     @PostMapping("/upload/profile-image")
-    public ResponseEntity<User> uploadImageToDB(@RequestParam("profileImage") MultipartFile imageFile) throws IOException {
-        byte[] imageArr = imageFile.getBytes();
-
-        // Create Entity and set profile image.
+    public ResponseEntity<User> uploadImageToDB(@RequestParam("profileImage") String imageFileBase64) {
         User user = userService.getUserById(userService.getCurrentUser().getId());
-        user.setProfileImage(imageArr);
+        user.setProfileImage(imageFileBase64);
         return ResponseEntity.accepted().body(userService.getUserById(userService.getCurrentUser().getId()));
     }
 

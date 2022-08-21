@@ -12,7 +12,7 @@ public class UserDto {
     @ApiModelProperty(notes = "User surname", example = "de Souza")
     private String surname;
     @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
-    private byte[] profileImage;
+    private String profileImage;
     @ApiModelProperty(notes = "User phone number", example = "5553332211")
     private String phoneNumber;
     @ApiModelProperty(notes = "User profile image", example = "image Bytes")
