@@ -28,11 +28,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    @GetMapping("/popilar")
-    public ResponseEntity<List<Category>> popularCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
     @PostMapping("/save")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
@@ -52,7 +47,7 @@ public class CategoryController {
         Category category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category.getJobAdvertisements());
     }
-    @GetMapping
+    @GetMapping("/popular")
     public Optional<List<Category>> getPopularCategories(){
         return categoryService.getPopularCategories();
     }
