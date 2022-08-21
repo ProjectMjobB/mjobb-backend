@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,16 @@ public class UserController {
     @PostMapping("update")
     public ResponseEntity<User> updateUser(@RequestBody UserDto user) {
         userService.updateUser(user);
+        return ResponseEntity.accepted().body(userService.getUserById(userService.getCurrentUser().getId()));
+    }
+
+    @PostMapping("/upload/profile-image")
+    public ResponseEntity<User> uploadImageToDB(@RequestParam("profileImage") MultipartFile imageFile) throws IOException {
+        byte[] imageArr = imageFile.getBytes();
+
+        // Create Entity and set profile image.
+        User user = userService.getUserById(userService.getCurrentUser().getId());
+        user.setProfileImage(imageArr);
         return ResponseEntity.accepted().body(userService.getUserById(userService.getCurrentUser().getId()));
     }
 

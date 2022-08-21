@@ -14,8 +14,6 @@ public class UserDto {
     @ApiModelProperty(notes = "User phone number", example = "5553332211")
     private String phoneNumber;
     @ApiModelProperty(notes = "User profile image", example = "image Bytes")
-    private Byte[] profileImage;
-    @ApiModelProperty(notes = "User country", example = "Brazil")
     private String country;
     @ApiModelProperty(notes = "User about", example = "Something about the user")
     private String about;

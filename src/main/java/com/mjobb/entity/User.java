@@ -27,7 +27,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Lob
-    private Byte[] profileImage;
+    private byte[] profileImage;
     private String country;
     private String city;
     private String about;
