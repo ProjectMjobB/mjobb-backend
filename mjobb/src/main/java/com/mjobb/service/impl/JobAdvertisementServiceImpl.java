@@ -7,6 +7,8 @@ import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.ApplicationRepository;
 import com.mjobb.repository.CompanyRepository;
 import com.mjobb.repository.JobAdvertisementRepository;
+import com.mjobb.repository.TagRepository;
+import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import com.sun.istack.NotNull;
@@ -28,6 +30,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final UserService userService;
     private final CompanyRepository companyRepository;
     private final ApplicationRepository applicationRepository;
+    private TagRepository tagRepository;
 
 
     @Override
@@ -183,6 +186,27 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     public void deleteJobAdvertisement(Long jobId) {
         JobAdvertisement jobAdvertisement = getJobAdvertisementById(jobId);
         jobAdvertisementRepository.delete(jobAdvertisement);
+    }
+
+    @Override
+    public void addTagToJobAdvertisement(AddTagRequest request) {
+        Tag tag = tagRepository.findById(request.getTagId()).orElseThrow();
+        JobAdvertisement jobAdvertisement = getJobAdvertisementById(request.getJobId());
+        List<Tag> tags = CollectionUtils.isEmpty(jobAdvertisement.getTags()) ? new ArrayList<>() : jobAdvertisement.getTags();
+        tags.add(tag);
+        jobAdvertisement.setTags(tags);
+        save(jobAdvertisement);
+
+    }
+
+    @Override
+    public void removeTagToJobAdvertisement(AddTagRequest request) {
+        Tag tag = tagRepository.findById(request.getTagId()).orElseThrow();
+        JobAdvertisement jobAdvertisement = getJobAdvertisementById(request.getJobId());
+        List<Tag> tags = CollectionUtils.isEmpty(jobAdvertisement.getTags()) ? new ArrayList<>() : jobAdvertisement.getTags();
+        List<Tag> newTags = tags.stream().filter(x -> !x.getId().equals(tag.getId())).toList();
+        jobAdvertisement.setTags(newTags);
+        save(jobAdvertisement);
     }
 
 

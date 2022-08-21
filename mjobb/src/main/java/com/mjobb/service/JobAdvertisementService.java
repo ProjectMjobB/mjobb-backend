@@ -3,6 +3,8 @@ package com.mjobb.service;
 import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.Tag;
+import com.mjobb.request.AddTagRequest;
 
 import java.util.List;
 
@@ -34,4 +36,7 @@ public interface JobAdvertisementService {
 
     void deleteJobAdvertisement(Long jobId);
 
+    void addTagToJobAdvertisement(AddTagRequest request);
+
+    void removeTagToJobAdvertisement(AddTagRequest request);
 }

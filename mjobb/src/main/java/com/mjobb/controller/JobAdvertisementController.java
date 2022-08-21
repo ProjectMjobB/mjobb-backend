@@ -4,6 +4,7 @@ import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.Application;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiOperation;
@@ -80,6 +81,21 @@ public class JobAdvertisementController {
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> deleteJob(@RequestParam Long id) {
         jobAdvertisementService.deleteJobAdvertisement(id);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/add-tag")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<Void> addTag(@RequestBody AddTagRequest request){
+        jobAdvertisementService.addTagToJobAdvertisement(request);
+    return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/remove-tag")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<Void> remove(@RequestBody AddTagRequest request){
+        jobAdvertisementService.removeTagToJobAdvertisement(request);
         return ResponseEntity.ok().build();
     }
 }
