@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/v1.0/categories/")
@@ -23,20 +24,25 @@ public class CategoryController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> allTags() {
+    public ResponseEntity<List<Category>> allCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    @GetMapping("/popilar")
+    public ResponseEntity<List<Category>> popularCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @PostMapping("/save")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Category> saveTag(@RequestBody Category category) {
+    public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
         categoryService.saveTag(category);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/delete")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Void> deleteTag(@RequestBody Category category) {
+    public ResponseEntity<Void> deleteCategory(@RequestBody Category category) {
         categoryService.deleteCategory(category);
         return ResponseEntity.ok().build();
     }
@@ -45,5 +51,9 @@ public class CategoryController {
     public ResponseEntity<?> getJobsFromCategory(@RequestParam Long id) {
         Category category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category.getJobAdvertisements());
+    }
+    @GetMapping
+    public Optional<List<Category>> getPopularCategories(){
+        return categoryService.getPopularCategories();
     }
 }
