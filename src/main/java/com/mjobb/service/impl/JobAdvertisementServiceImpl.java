@@ -7,17 +7,19 @@ import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.ApplicationRepository;
 import com.mjobb.repository.CompanyRepository;
 import com.mjobb.repository.JobAdvertisementRepository;
+import com.mjobb.repository.TagRepository;
+import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final CompanyRepository companyRepository;
     private final ApplicationRepository applicationRepository;
 
+    private TagRepository tagRepository;
 
     @Override
     public void addFavoriteJobForCurrentUser(Long jobId) {
@@ -120,6 +123,25 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return company.getJobs();
     }
 
+    public List<JobAdvertisement> getAllJobs(Optional <String> title) {
+        List<JobAdvertisement> jobAdvertisements = new ArrayList<JobAdvertisement>();
+        if (title == null)
+            jobAdvertisementRepository.findAll().forEach(jobAdvertisements::add);
+        else
+            jobAdvertisementRepository.findByTitleContaining(String.valueOf(title)).forEach(jobAdvertisements::add);
+
+        return jobAdvertisements;
+    }
+
+    public List<JobAdvertisement> getOpenedJobs(Optional <String> title) {
+        List<JobAdvertisement> jobAdvertisements = new ArrayList<JobAdvertisement>();
+        if (title == null)
+            jobAdvertisementRepository.findAll().forEach(jobAdvertisements::add);
+        else
+            jobAdvertisementRepository.findByTitleContaining(String.valueOf(title)).forEach(jobAdvertisements::add);
+
+        return jobAdvertisements.stream().filter(JobAdvertisement::isAccepted).collect(Collectors.toList());
+    }
     @Override
     public List<JobAdvertisement> getMyOpenedJobs() {
         List<JobAdvertisement> jobs = getMyCreatedJobs();
@@ -147,6 +169,27 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                 .build();
         jobAdvertisement.setCompany(company);
         return save(jobAdvertisement);
+    }
+
+    @Override
+    public void addTagToJobAdvertisement(AddTagRequest request) {
+        Tag tag = tagRepository.findById(request.getTagId()).orElseThrow();
+        JobAdvertisement jobAdvertisement = getJobAdvertisementById(request.getJobId());
+        List<Tag> tags = CollectionUtils.isEmpty(jobAdvertisement.getTags()) ? new ArrayList<>() : (List<Tag>) jobAdvertisement.getTags();
+        tags.add(tag);
+        jobAdvertisement.setTags((Set<Tag>) tags);
+        save(jobAdvertisement);
+
+    }
+
+    @Override
+    public void removeTagToJobAdvertisement(AddTagRequest request) {
+        Tag tag = tagRepository.findById(request.getTagId()).orElseThrow();
+        JobAdvertisement jobAdvertisement = getJobAdvertisementById(request.getJobId());
+        List<Tag> tags = CollectionUtils.isEmpty(jobAdvertisement.getTags()) ? new ArrayList<>() : (List<Tag>) jobAdvertisement.getTags();
+        List<Tag> newTags = tags.stream().filter(x -> !x.getId().equals(tag.getId())).toList();
+        jobAdvertisement.setTags((Set<Tag>) newTags);
+        save(jobAdvertisement);
     }
 
     @Override

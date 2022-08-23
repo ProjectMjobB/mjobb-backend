@@ -1,5 +1,6 @@
 package com.mjobb.service;
 
+import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.Tag;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface TagService {
     void deleteTag(Tag tag);
 
     Tag getTagById(Long id);
+
+    List<JobAdvertisement> getJobsFromTagId(Long tagId);
 }

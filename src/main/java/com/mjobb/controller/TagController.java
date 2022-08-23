@@ -39,9 +39,8 @@ public class TagController {
         tagService.deleteTag(tag);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/get-by-id")
-    public ResponseEntity<List<JobAdvertisement>> getJobsFromCategory(@RequestParam Long id) {
-        Tag tag = tagService.getTagById(id);
-        return ResponseEntity.ok(tag.getJobs());
+    @GetMapping("/tags/{tagId}/jobAdvertisements")
+    public ResponseEntity<List<JobAdvertisement>> getJobsFromTagId(@PathVariable(value = "tagId") Long tagId) {
+        return ResponseEntity.ok(tagService.getJobsFromTagId(tagId));
     }
 }

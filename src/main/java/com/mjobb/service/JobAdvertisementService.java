@@ -4,7 +4,11 @@ import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.JobAdvertisement;
 
 import java.util.List;
+import java.util.Optional;
+
 import com.mjobb.entity.Employee;
+import com.mjobb.request.AddTagRequest;
+
 public interface JobAdvertisementService {
 
     void addFavoriteJobForCurrentUser(Long jobId);
@@ -29,7 +33,14 @@ public interface JobAdvertisementService {
 
     JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
     List<Employee> getEmployeesByAppliedJob(Long jobId);
+     List<JobAdvertisement> getAllJobs(Optional<String> title);
+     List<JobAdvertisement> getOpenedJobs(Optional<String> title);
 
     void deleteJobAdvertisement(Long jobId);
+
+    void addTagToJobAdvertisement(AddTagRequest request);
+
+    void removeTagToJobAdvertisement(AddTagRequest request);
+
 
 }

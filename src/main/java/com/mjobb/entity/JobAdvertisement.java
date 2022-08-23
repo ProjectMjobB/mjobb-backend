@@ -8,7 +8,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -60,12 +62,25 @@ public class JobAdvertisement implements Serializable {
     private Date updatedDate;
     @ManyToMany
     @JoinTable(name = "job_tags",
-            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    private List<Tag> tags;
+            joinColumns = { @JoinColumn(name = "job_advertisement_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable=false)
     private Category category;
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getJobAdvertisements().add(this);
+    }
+
+    public void removeTag(long tagId) {
+        Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+        if (tag != null) {
+            this.tags.remove(tag);
+            tag.getJobAdvertisements().remove(this);
+        }
+    }
 
 }
