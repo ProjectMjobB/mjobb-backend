@@ -16,4 +16,5 @@ public interface TagService {
     Tag getTagById(Long id);
 
     List<JobAdvertisement> getJobsFromTagId(Long tagId);
+    List<Tag> getAllTagsByJobAdvertisementId(Long jobAdvertisementId);
 }

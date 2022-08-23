@@ -4,6 +4,7 @@ import com.mjobb.entity.Tag;
 import com.mjobb.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,15 @@ public class TagController {
         tagService.deleteTag(tag);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/tags/{tagId}/jobAdvertisements")
     public ResponseEntity<List<JobAdvertisement>> getJobsFromTagId(@PathVariable(value = "tagId") Long tagId) {
         return ResponseEntity.ok(tagService.getJobsFromTagId(tagId));
+    }
+
+    @GetMapping("/jobAdvertisements/{jobAdvertisementId}/tags")
+    public ResponseEntity<List<Tag>> getAllTagsByJobAdvertisementId(@PathVariable(value = "jobAdvertisementId") Long jobAdvertisementId) {
+
+        return new ResponseEntity<>(tagService.getAllTagsByJobAdvertisementId(jobAdvertisementId), HttpStatus.OK);
     }
 }

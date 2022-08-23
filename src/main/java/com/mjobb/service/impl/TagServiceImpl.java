@@ -7,6 +7,7 @@ import com.mjobb.repository.TagRepository;
 import com.mjobb.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.mjobb.exception.WebServiceException;
 
@@ -45,5 +46,13 @@ public class TagServiceImpl implements TagService {
         }
         List<JobAdvertisement> jobAdvertisements = jobAdvertisementRepository.findJobAdvertisementByTagsId(tagId);
         return jobAdvertisements;
+    }
+
+    public List<Tag> getAllTagsByJobAdvertisementId(Long jobAdvertisementId) {
+        if (!jobAdvertisementRepository.existsById(jobAdvertisementId)) {
+            throw new WebServiceException("Not found JobAdvertisement with id = " + jobAdvertisementId);
+        }
+        List<Tag> tags = tagRepository.findTagsByJobAdvertisementsId(jobAdvertisementId);
+        return tags;
     }
 }
