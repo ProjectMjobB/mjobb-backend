@@ -34,8 +34,8 @@ public interface JobAdvertisementService {
 
     JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
     List<Employee> getEmployeesByAppliedJob(Long jobId);
-     List<JobAdvertisement> getAllJobs(Optional<String> title);
-     List<JobAdvertisement> getOpenedJobs(Optional<String> title);
+     List<JobAdvertisement> getAllJobs();
+     List<JobAdvertisement> getOpenedJobs();
 
     void deleteJobAdvertisement(Long jobId);
 

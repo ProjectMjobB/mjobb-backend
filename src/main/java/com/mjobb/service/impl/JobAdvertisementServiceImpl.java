@@ -123,24 +123,12 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return company.getJobs();
     }
 
-    public List<JobAdvertisement> getAllJobs(Optional <String> title) {
-        List<JobAdvertisement> jobAdvertisements = new ArrayList<JobAdvertisement>();
-        if (title == null)
-            jobAdvertisementRepository.findAll().forEach(jobAdvertisements::add);
-        else
-            jobAdvertisementRepository.findByTitleContaining(String.valueOf(title)).forEach(jobAdvertisements::add);
-
-        return jobAdvertisements;
+    public List<JobAdvertisement> getAllJobs() {
+        return jobAdvertisementRepository.findAll();
     }
 
-    public List<JobAdvertisement> getOpenedJobs(Optional <String> title) {
-        List<JobAdvertisement> jobAdvertisements = new ArrayList<JobAdvertisement>();
-        if (title == null)
-            jobAdvertisementRepository.findAll().forEach(jobAdvertisements::add);
-        else
-            jobAdvertisementRepository.findByTitleContaining(String.valueOf(title)).forEach(jobAdvertisements::add);
-
-        return jobAdvertisements.stream().filter(JobAdvertisement::isAccepted).collect(Collectors.toList());
+    public List<JobAdvertisement> getOpenedJobs() {
+        return jobAdvertisementRepository.findAllByAccepted(true);
     }
     @Override
     public List<JobAdvertisement> getMyOpenedJobs() {
@@ -177,7 +165,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             long tagId = tagRequest.getId();
 
             // tag is existed
-            if (tagId != 0L) {
+            if (tagId != 0) {
                 Tag _tag = tagRepository.findById(tagId)
                         .orElseThrow(() -> new WebServiceException("Not found Tag with id = " + tagId));
                 job.addTag(_tag);

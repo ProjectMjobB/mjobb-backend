@@ -56,18 +56,18 @@ public class JobAdvertisementController {
     }
     @GetMapping("all-jobs")
     @Secured({"ROLE_COMPANY"})
-    public ResponseEntity<List<JobAdvertisement>> getAllJobs(@RequestParam(required = false) Optional<String> title) {
-       List<JobAdvertisement> jobs = jobAdvertisementService.getAllJobs(title);
+    public ResponseEntity<List<JobAdvertisement>> getAllJobs() {
+       List<JobAdvertisement> jobs = jobAdvertisementService.getAllJobs();
         if (jobs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
-    @GetMapping("opened-jobs")
+    @GetMapping("all-opened-jobs")
     @Secured({"ROLE_COMPANY"})
-    public ResponseEntity<List<JobAdvertisement>> getOpenedJobs(@RequestParam(required = false) Optional<String> title) {
-        List<JobAdvertisement> jobs = jobAdvertisementService.getOpenedJobs(title);
+    public ResponseEntity<List<JobAdvertisement>> getOpenedJobs() {
+        List<JobAdvertisement> jobs = jobAdvertisementService.getOpenedJobs();
         if (jobs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
