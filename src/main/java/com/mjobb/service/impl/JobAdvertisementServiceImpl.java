@@ -172,14 +172,24 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public void addTagToJobAdvertisement(AddTagRequest request) {
-        Tag tag = tagRepository.findById(request.getTagId()).orElseThrow();
-        JobAdvertisement jobAdvertisement = getJobAdvertisementById(request.getJobId());
-        List<Tag> tags = CollectionUtils.isEmpty(jobAdvertisement.getTags()) ? new ArrayList<>() : (List<Tag>) jobAdvertisement.getTags();
-        tags.add(tag);
-        jobAdvertisement.setTags((Set<Tag>) tags);
-        save(jobAdvertisement);
+    public Tag addTagToJobAdvertisement(Long jobId,Tag tagRequest) {
+        Tag tag = jobAdvertisementRepository.findById(jobId).map(job -> {
+            long tagId = tagRequest.getId();
 
+            // tag is existed
+            if (tagId != 0L) {
+                Tag _tag = tagRepository.findById(tagId)
+                        .orElseThrow(() -> new WebServiceException("Not found Tag with id = " + tagId));
+                job.addTag(_tag);
+                jobAdvertisementRepository.save(job);
+                return _tag;
+            }
+
+            // add and create new Tag
+            job.addTag(tagRequest);
+            return tagRepository.save(tagRequest);
+        }).orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + jobId));
+        return tag;
     }
 
     @Override

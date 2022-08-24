@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mjobb.entity.Employee;
+import com.mjobb.entity.Tag;
 import com.mjobb.request.AddTagRequest;
 
 public interface JobAdvertisementService {
@@ -38,7 +39,7 @@ public interface JobAdvertisementService {
 
     void deleteJobAdvertisement(Long jobId);
 
-    void addTagToJobAdvertisement(AddTagRequest request);
+    Tag addTagToJobAdvertisement(Long jobId, Tag tagRequest);
 
     void removeTagToJobAdvertisement(AddTagRequest request);
 

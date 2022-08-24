@@ -2,6 +2,7 @@ package com.mjobb.controller;
 
 import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.Tag;
 import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
@@ -107,11 +108,11 @@ public class JobAdvertisementController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/add-tag")
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<Void> addTag(@RequestBody AddTagRequest request){
-        jobAdvertisementService.addTagToJobAdvertisement(request);
-        return ResponseEntity.ok().build();
+    @PostMapping("/{jobAdvertisementId}/add-tag")
+    public ResponseEntity<?> addTag(@PathVariable(value = "jobAdvertisementId") Long jobAdvertisementId, @RequestBody Tag tagRequest) {
+        Tag tag = jobAdvertisementService.addTagToJobAdvertisement(jobAdvertisementId, tagRequest);
+        return new ResponseEntity<>(tag, HttpStatus.CREATED);
     }
 
     @PostMapping("/remove-tag")
