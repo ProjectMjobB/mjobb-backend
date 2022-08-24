@@ -19,7 +19,7 @@ import java.util.List;
 public class Company extends User {
 
     private String website;
-    @Size(min = 4,max = 4, message = "Foundation year must be 4 digits")
+    @Size(min = 4,max = 4,  message = "Foundation year must be 4 digits")
     private String foundationDate;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,4 +19,17 @@ public class Language {
     @Column
     private Long id;
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "users_languages",
+            joinColumns = {@JoinColumn(name = "languages_id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id")})
+    private Set<Employee> employees = new HashSet<>();
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+    public void setTutorials(Set<Employee> employees) {
+        this.employees = employees;
+    }
 }

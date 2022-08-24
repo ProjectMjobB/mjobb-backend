@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,8 +23,14 @@ public class Employee extends User {
     private BigDecimal requestedSalary;
     @OneToMany
     private List<WorkingArea> workingAreas;
-    @OneToMany
-    private List<Language> languages;
+
+    @ManyToMany
+    @JoinTable(name = "users_languages",
+            joinColumns = {@JoinColumn(name = "employee_id")},
+            inverseJoinColumns = {@JoinColumn(name = "languages_id")})
+    private Set<Language> languages = new HashSet<>();
+
+
     @OneToMany
     private List<Comment> comments;
     @OneToMany
@@ -32,5 +40,19 @@ public class Employee extends User {
             joinColumns = {@JoinColumn(name = "employee_id")},
             inverseJoinColumns = {@JoinColumn(name = "application_id")})
     private List<Application> applications;
+
+
+    public void addLanguage(Language language) {
+        this.languages.add(language);
+        language.getEmployees().add(this);
+    }
+
+    public void removeLanguage(long langId) {
+        Language language = this.languages.stream().filter(t -> t.getId() == langId).findFirst().orElse(null);
+        if (language != null) {
+            this.languages.remove(language);
+            language.getEmployees().remove(this);
+        }
+    }
 
 }
