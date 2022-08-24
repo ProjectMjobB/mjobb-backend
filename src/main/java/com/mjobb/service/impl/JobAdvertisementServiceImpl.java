@@ -31,7 +31,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final CompanyRepository companyRepository;
     private final ApplicationRepository applicationRepository;
 
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public void addFavoriteJobForCurrentUser(Long jobId) {
