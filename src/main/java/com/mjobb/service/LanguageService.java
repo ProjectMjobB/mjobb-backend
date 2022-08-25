@@ -1,7 +1,8 @@
 package com.mjobb.service;
 
+import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.Language;
-import com.mjobb.entity.Tag;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -10,7 +11,16 @@ public interface LanguageService {
 
     void saveLanguage(Language language);
 
-    void deleteLanguage(Language language);
+    void deleteLanguage(long id);
 
     Language getLanguageById(Long id);
+
+    List<Language> getAllLanguagesByJobAdvertisementId(Long jobId);
+
+    Language getLanguagesById(Long id);
+
+    List<JobAdvertisement> getAllJobsByLanguageId(Long languageId);
+
+    Language addLanguage(Long jobId, Language languageRequest);
+    void deleteLanguageFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "languageId") Long languageId);
 }
