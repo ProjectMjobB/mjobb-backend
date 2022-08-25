@@ -1,5 +1,6 @@
 package com.mjobb.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,4 +33,13 @@ public class Language {
     public void setTutorials(Set<Employee> employees) {
         this.employees = employees;
     }
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "languages")
+    @JsonIgnore
+    private Set<JobAdvertisement> jobAdvertisements = new HashSet<>();
 }
