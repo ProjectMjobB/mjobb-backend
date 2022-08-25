@@ -11,7 +11,7 @@ public class JobAdvertisementDto {
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
     private BigDecimal maximumSalary;
-    private byte[] file;
+    private String file;
     private String type;
     private String workingType;
 }
