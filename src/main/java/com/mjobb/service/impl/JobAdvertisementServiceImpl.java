@@ -4,10 +4,7 @@ import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.*;
 import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.exception.WebServiceException;
-import com.mjobb.repository.ApplicationRepository;
-import com.mjobb.repository.CompanyRepository;
-import com.mjobb.repository.JobAdvertisementRepository;
-import com.mjobb.repository.TagRepository;
+import com.mjobb.repository.*;
 import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
@@ -17,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
@@ -31,7 +30,18 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final CompanyRepository companyRepository;
     private final ApplicationRepository applicationRepository;
 
+    private final CategoryRepository categoryRepository;
+
     private final TagRepository tagRepository;
+
+    private final JobTypeRepository jobTypeRepository;
+
+
+    public JobAdvertisement getJobAdvertisementById(long id) {
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + id));
+        return jobAdvertisement;
+    }
 
     @Override
     public void addFavoriteJobForCurrentUser(Long jobId) {
@@ -123,13 +133,16 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return company.getJobs();
     }
 
+    @Override
     public List<JobAdvertisement> getAllJobs() {
         return jobAdvertisementRepository.findAll();
     }
 
+    @Override
     public List<JobAdvertisement> getOpenedJobs() {
         return jobAdvertisementRepository.findAllByAccepted(true);
     }
+
     @Override
     public List<JobAdvertisement> getMyOpenedJobs() {
         List<JobAdvertisement> jobs = getMyCreatedJobs();
@@ -140,27 +153,43 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public JobAdvertisement createJobAdvertisement(JobAdvertisementDto request) {
+    public JobAdvertisement createJobAdvertisement(Long categoryId,Long jobTypeId, JobAdvertisement request) {
         User user = userService.getCurrentUser();
         Company company = companyRepository.findById(user.getId()).orElseThrow(() -> {
             throw new UserNotFoundException("Company not found");
         });
-        JobAdvertisement jobAdvertisement = JobAdvertisement.builder()
-                .title(request.getTitle())
-                .yearsOfExperience(request.getYearsOfExperience())
-                .minimumSalary(request.getMinimumSalary())
-                .maximumSalary(request.getMaximumSalary())
-                .file(request.getFile())
-                .type(request.getType())
-                .workingType(request.getWorkingType())
-                .accepted(false)
-                .build();
-        jobAdvertisement.setCompany(company);
-        return save(jobAdvertisement);
+        JobAdvertisement jobAdvertisement = categoryRepository.findById(categoryId).map(category -> {
+            request.setAccepted(false);
+            request.setCategory(category);
+            request.setCompany(company);
+            request.setJobType(jobTypeRepository.findById(jobTypeId).orElseThrow(() -> {
+                throw new WebServiceException("Job type not found");
+            }));
+            return jobAdvertisementRepository.save(request);
+        }).orElseThrow(() -> new WebServiceException("Not found Category with id = " + categoryId));
+
+        return jobAdvertisement;
     }
 
     @Override
-    public Tag addTagToJobAdvertisement(Long jobId,Tag tagRequest) {
+    public List<JobAdvertisement> getAllJobsByCategoryId(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new WebServiceException("Not found Category with id = " + categoryId);
+        }
+        List<JobAdvertisement> jobs = jobAdvertisementRepository.findByCategoryId(categoryId);
+
+        return jobs;
+    }
+
+    @Override
+    public JobAdvertisement getJobByCategoryId(Long id) {
+        JobAdvertisement job = jobAdvertisementRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("Not found Job with id = " + id));
+        return job;
+    }
+
+    @Override
+    public Tag addTagToJobAdvertisement(Long jobId, Tag tagRequest) {
         Tag tag = jobAdvertisementRepository.findById(jobId).map(job -> {
             long tagId = tagRequest.getId();
 
@@ -176,7 +205,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             // add and create new Tag
             job.addTag(tagRequest);
             return tagRepository.save(tagRequest);
-        }).orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + jobId));
+        }).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
         return tag;
     }
 
@@ -191,9 +220,40 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement) {
+    public Tag addTag(Long jobId, Tag tagRequest) {
+        Tag tag = jobAdvertisementRepository.findById(jobId).map(job -> {
+            long tagId = tagRequest.getId();
+
+            // tag is existed
+            if (tagId != 0L) {
+                Tag _tag = tagRepository.findById(tagId)
+                        .orElseThrow(() -> new WebServiceException("Not found Tag with id = " + tagId));
+                job.addTag(_tag);
+                jobAdvertisementRepository.save(job);
+                return _tag;
+            }
+
+            // add and create new Tag
+            job.addTag(tagRequest);
+            return tagRepository.save(tagRequest);
+        }).orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + jobId));
+        return tag;
+    }
+
+    @Override
+    public void deleteTagFromTutorial( Long jobId, Long tagId) {
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId)
+                .orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+
+        jobAdvertisement.removeTag(tagId);
+        jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
+
+    @Override
+    public JobAdvertisement applyJobForUser(long job_id) {
         Employee employee = (Employee) userService.getCurrentUser();
-        JobAdvertisement job = jobAdvertisementRepository.findById(jobAdvertisement.getId()).orElseThrow(() -> {
+        JobAdvertisement job = jobAdvertisementRepository.findById(job_id).orElseThrow(() -> {
             throw new WebServiceException("Job not found");
         });
 
