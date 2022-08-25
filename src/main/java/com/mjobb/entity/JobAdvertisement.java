@@ -3,6 +3,8 @@ package com.mjobb.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,9 +28,14 @@ public class JobAdvertisement implements Serializable {
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
     private BigDecimal maximumSalary;
-    @Lob
-    private byte[] file;
-    private String type;
+    private String file;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "job_type_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private JobType jobType;
+
     private String workingType;
     private String country;
     private String city;
@@ -44,11 +51,7 @@ public class JobAdvertisement implements Serializable {
             joinColumns = {@JoinColumn(name = "job_advertisement_id")},
             inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Company company;
-    @OneToMany
-    @JoinTable(name = "job_comments",
-            joinColumns = {@JoinColumn(name = "job_advertisement_id")},
-            inverseJoinColumns = {@JoinColumn(name = "comment_id")})
-    private List<Comment> comments;
+
     @OneToMany
     @JoinTable(name = "job_complaints",
             joinColumns = {@JoinColumn(name = "job_advertisement_id")},
@@ -63,9 +66,32 @@ public class JobAdvertisement implements Serializable {
             inverseJoinColumns = { @JoinColumn(name = "tag_id") })
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name="category_id", nullable=false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Category category;
+
+
+
+    @ManyToMany
+    @JoinTable(name = "job_languages",
+            joinColumns = { @JoinColumn(name = "job_advertisement_id") },
+            inverseJoinColumns = { @JoinColumn(name = "language_id") })
+    private Set<Language> languages = new HashSet<>();
+
+    public void addLanguage(Language language) {
+        this.languages.add(language);
+        language.getJobAdvertisements().add(this);
+    }
+
+    public void removeLanguage(long languageId) {
+        Language language = this.languages.stream().filter(t -> t.getId() == languageId).findFirst().orElse(null);
+        if (language != null) {
+            this.languages.remove(language);
+            language.getJobAdvertisements().remove(this);
+        }
+    }
 
     public void addTag(Tag tag) {
         this.tags.add(tag);
