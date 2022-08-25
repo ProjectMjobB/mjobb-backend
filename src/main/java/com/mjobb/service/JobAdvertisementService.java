@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.mjobb.entity.Employee;
 import com.mjobb.entity.Tag;
 import com.mjobb.request.AddTagRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface JobAdvertisementService {
 
@@ -30,18 +31,21 @@ public interface JobAdvertisementService {
 
     List<JobAdvertisement> getMyOpenedJobs();
 
-    JobAdvertisement createJobAdvertisement(JobAdvertisementDto jobAdvertisement);
+    JobAdvertisement createJobAdvertisement(Long categoryId,Long jobTypeId,JobAdvertisement jobAdvertisement);
 
-    JobAdvertisement applyJobForUser(JobAdvertisement jobAdvertisement);
+    JobAdvertisement applyJobForUser(long job_id);
     List<Employee> getEmployeesByAppliedJob(Long jobId);
      List<JobAdvertisement> getAllJobs();
      List<JobAdvertisement> getOpenedJobs();
+     List<JobAdvertisement> getAllJobsByCategoryId(Long categoryId);
+
+    JobAdvertisement getJobByCategoryId(Long id);
 
     void deleteJobAdvertisement(Long jobId);
 
     Tag addTagToJobAdvertisement(Long jobId, Tag tagRequest);
-
+    Tag addTag(Long jobId, Tag tagRequest);
     void removeTagToJobAdvertisement(AddTagRequest request);
-
-
+    JobAdvertisement getJobAdvertisementById(long id);
+    void deleteTagFromTutorial(Long jobId, Long tagId);
 }
