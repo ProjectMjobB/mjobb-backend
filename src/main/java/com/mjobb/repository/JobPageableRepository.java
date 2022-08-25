@@ -11,4 +11,4 @@ public interface JobPageableRepository extends PagingAndSortingRepository<JobAdv
 
     Page<JobAdvertisement> findAllByAccepted(boolean accepted, Pageable pageable);
 
-    Page<JobAdvertisement> findAllByTitleContainsIgnoreCaseOrAddressContainsIgnoreCaseOrTypeContainsIgnoreCaseAndAccepted(String title, String address, String type, boolean accepted, Pageable pageable);}
+    Page<JobAdvertisement> findAllByTitleContainsIgnoreCaseOrAddressContainsIgnoreCaseOrJobTypeContainsIgnoreCaseAndAccepted(String title, String address, String type, boolean accepted, Pageable pageable);}
