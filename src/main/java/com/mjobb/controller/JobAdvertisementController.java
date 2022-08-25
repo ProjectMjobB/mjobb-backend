@@ -75,23 +75,40 @@ public class JobAdvertisementController {
     }
 
 
+    @GetMapping("/jobAdvertisements/{categoryId}/jobs")
+    public ResponseEntity<List<JobAdvertisement>> getAllJobsByCategoryId(@PathVariable(value = "categoryId") Long categoryId) {
+        return new ResponseEntity<>(jobAdvertisementService.getAllJobsByCategoryId(categoryId), HttpStatus.OK);
+    }
+
+    @GetMapping("category/{id}")
+    public ResponseEntity<JobAdvertisement> getJobByCategoryId(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<>(jobAdvertisementService.getJobByCategoryId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<JobAdvertisement> getJobAdvertisementById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(jobAdvertisementService.getJobAdvertisementById(id), HttpStatus.OK);
+    }
+
     @GetMapping("current-company-opened-jobs")
     @Secured({"ROLE_COMPANY"})
     public ResponseEntity<List<JobAdvertisement>> getCompanyApprovedJobs() {
         return ResponseEntity.ok(jobAdvertisementService.getMyOpenedJobs());
     }
 
-    @PostMapping("create")
+    @PostMapping("/{categoryId}/{jobTypeId}/jobAdvertisements")
     @Secured({"ROLE_COMPANY"})
-    public ResponseEntity<JobAdvertisement> createJobAdvertisement(@RequestBody JobAdvertisementDto job) {
-        return ResponseEntity.ok(jobAdvertisementService.createJobAdvertisement(job));
+    public ResponseEntity<JobAdvertisement> createJobAdvertisement(@PathVariable(value = "categoryId") Long categoryId,
+                                                                   @PathVariable(value = "jobTypeId") Long jobTypeId,
+                                                                   @RequestBody JobAdvertisement jobAdvertisementRequest) {
+        return ResponseEntity.ok(jobAdvertisementService.createJobAdvertisement(categoryId,jobTypeId, jobAdvertisementRequest));
     }
 
 
-    @PostMapping("apply")
+    @PostMapping("apply/{job_id}")
     @Secured("ROLE_EMPLOYEE")
-    public ResponseEntity<JobAdvertisement> applyJob(@RequestBody JobAdvertisement jobAdvertisement) {
-        return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(jobAdvertisement));
+    public ResponseEntity<JobAdvertisement> applyJob(@PathVariable long job_id) {
+        return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(job_id));
     }
 
     @GetMapping("/applied-users")
@@ -101,7 +118,7 @@ public class JobAdvertisementController {
     }
 
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> deleteJob(@RequestParam Long id) {
         jobAdvertisementService.deleteJobAdvertisement(id);
@@ -109,17 +126,16 @@ public class JobAdvertisementController {
     }
 
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
-    @PostMapping("/{jobAdvertisementId}/add-tag")
-    public ResponseEntity<?> addTag(@PathVariable(value = "jobAdvertisementId") Long jobAdvertisementId, @RequestBody Tag tagRequest) {
-        Tag tag = jobAdvertisementService.addTagToJobAdvertisement(jobAdvertisementId, tagRequest);
-        return new ResponseEntity<>(tag, HttpStatus.CREATED);
+    @PostMapping("/{jobId}/tags")
+    public ResponseEntity<Tag> addTag(@PathVariable Long jobId, @RequestBody Tag addTagRequest) {
+        return new ResponseEntity<>(jobAdvertisementService.addTag(jobId,addTagRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/remove-tag")
+    @DeleteMapping("/{jobId}/tags/{tagId}")
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<Void> remove(@RequestBody AddTagRequest request){
-        jobAdvertisementService.removeTagToJobAdvertisement(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HttpStatus> deleteTagFromTutorial(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "tagId") Long tagId) {
+        jobAdvertisementService.deleteTagFromTutorial(jobId, tagId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
