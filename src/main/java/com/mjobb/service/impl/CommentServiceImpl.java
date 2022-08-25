@@ -3,7 +3,9 @@ package com.mjobb.service.impl;
 import com.mjobb.entity.Comment;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.User;
+import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.CommentRepository;
+import com.mjobb.repository.JobAdvertisementRepository;
 import com.mjobb.request.CommentRequest;
 import com.mjobb.service.CommentService;
 import com.mjobb.service.JobAdvertisementService;
@@ -11,6 +13,8 @@ import com.mjobb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,6 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     private final UserService userService;
-    private final JobAdvertisementService jobAdvertisementService;
     private final CommentRepository commentRepository;
 
 
@@ -52,27 +55,18 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
-    @Override
-    public void userCommentToJob(CommentRequest request) {
-        User fromUser = userService.getCurrentUser();
-        JobAdvertisement jobAdvertisement = jobAdvertisementService.getJobAdvertisementById(request.getJobId());
-        Comment comment = Comment.builder()
-                .comment(request.getComment())
-                .job(jobAdvertisement)
-                .fromUser(fromUser)
-                .point(request.getPoint())
-                .build();
+    public Comment updateComment(long id, @RequestBody Comment commentRequest) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("CommentId " + id + "not found"));
+        comment.setComment(commentRequest.getComment());
+        comment.setPoint(commentRequest.getPoint());
+        comment.setToUser(commentRequest.getToUser());
+        comment.setFromUser(commentRequest.getFromUser());
+        return commentRepository.save(comment);
+    }
 
-
-        List<Comment> commentHistories = CollectionUtils.isEmpty(fromUser.getComments()) ? new ArrayList<>() : fromUser.getComments();
-        commentHistories.add(comment);
-        fromUser.setComments(commentHistories);
-        userService.save(fromUser);
-
-        List<Comment> comments = CollectionUtils.isEmpty(jobAdvertisement.getComments()) ? new ArrayList<>() : jobAdvertisement.getComments();
-        comments.add(comment);
-        jobAdvertisement.setComments(comments);
-        jobAdvertisementService.save(jobAdvertisement);
+    public void deleteComment(long id) {
+        commentRepository.deleteById(id);
     }
 
     @Override
@@ -103,6 +97,22 @@ public class CommentServiceImpl implements CommentService {
                     commentRepository.save(comment);
                 }
         );
+    }
+
+    @Override
+    public List<Comment> getAllCommentsByToUserId(Long userId) {
+        if (userService.getUserById(userId) == null) {
+            throw new WebServiceException("Not found User with id = " + userId);
+        }
+        List<Comment> comments = commentRepository.findByToUserId(userId);
+        return comments;
+    }
+
+    @Override
+    public Comment getCommentById(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("Not found Comment with id = " + id));
+        return comment;
     }
 
     private void calculateGeneralPoint(User user) {
