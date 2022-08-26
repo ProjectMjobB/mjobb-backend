@@ -28,7 +28,7 @@ public class ComplaintController {
 
 
     @PostMapping("user-to-job")
-    @Secured({"ROLE_EMPLOYEE"})
+    @Secured("ROLE_EMPLOYEE")
     public ResponseEntity<Void> userComplaintToJob(@RequestBody ComplaintRequest request) {
         complaintService.userComplaintToJob(request);
         return ResponseEntity.ok().build();
