@@ -102,11 +102,6 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         Calendar cal = Calendar.getInstance();
         Date date=cal.getTime();
 
-            User company = jobAdvertisement.getCompany();
-            User user = userService.getCurrentUser();
-            if (!company.getId().equals(user.getId())) {
-                throw new WebServiceException("You are not authorized to perform this action");
-        }
         jobAdvertisement.setCreatedDate(date);
         jobAdvertisement.setUpdatedDate(date);
         return jobAdvertisementRepository.save(jobAdvertisement);
