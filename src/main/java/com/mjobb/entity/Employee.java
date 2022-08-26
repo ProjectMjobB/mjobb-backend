@@ -20,7 +20,8 @@ public class Employee extends User {
     private String areaOfInterest;
     private String requestedWorkingType;
     private Long age;
-    @Nullable
+
+    @Column(nullable = true)
     private int yearsOfExperience;
     private BigDecimal currentSalary;
     private BigDecimal requestedSalary;
