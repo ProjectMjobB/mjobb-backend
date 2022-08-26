@@ -57,12 +57,12 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .build();
 
         List<Complaint> complaints = CollectionUtils.isEmpty(jobAdvertisement.getComplaints()) ? new ArrayList<>() : jobAdvertisement.getComplaints();
-        List<Complaint> complaintHistories = CollectionUtils.isEmpty(fromUser.getComments()) ? new ArrayList<>() : fromUser.getComplaintHistory();
+//        List<Complaint> complaintHistories = CollectionUtils.isEmpty(fromUser.getComments()) ? new ArrayList<>() : fromUser.getComplaintHistory();
 
         complaints.add(complaint);
-        complaintHistories.add(complaint);
+//        complaintHistories.add(complaint);
 
-        fromUser.setComplaintHistory(complaintHistories);
+//        fromUser.setComplaintHistory(complaintHistories);
         jobAdvertisement.setComplaints(complaints);
 
 

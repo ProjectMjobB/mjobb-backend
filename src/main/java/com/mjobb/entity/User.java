@@ -2,6 +2,7 @@ package com.mjobb.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,13 +33,6 @@ public class User {
     private String about;
     private String contactInformation;
     private Double generalPoint;
-    @OneToMany
-    @JoinTable(name = "user_comments",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "comment_id")})
-    private List<Comment> comments;
-    @OneToMany
-    private List<Comment> commentHistory;
     @OneToMany
     @JoinTable(name = "user_complaints",
             joinColumns = {@JoinColumn(name = "user_id")},

@@ -1,8 +1,7 @@
 package com.mjobb.controller;
 
 import com.mjobb.dto.JobAdvertisementDto;
-import com.mjobb.entity.JobAdvertisement;
-import com.mjobb.entity.Tag;
+import com.mjobb.entity.*;
 import com.mjobb.request.AddTagRequest;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import com.mjobb.entity.Application;
-import com.mjobb.entity.Employee;
-
 @RestController
 @RequestMapping("/api/v1.0/jobs/")
 @RequiredArgsConstructor
@@ -26,7 +22,6 @@ import com.mjobb.entity.Employee;
 public class JobAdvertisementController {
 
     private final JobAdvertisementService jobAdvertisementService;
-
 
     @GetMapping("add/favorite")
     @Secured({"ROLE_EMPLOYEE"})
@@ -43,12 +38,12 @@ public class JobAdvertisementController {
     }
 
 
-    @PostMapping("update")
+    @PutMapping("/{id}")
     @Secured({"ROLE_COMPANY"})
-    public ResponseEntity<JobAdvertisement> updateJob(@RequestBody JobAdvertisement jobAdvertisement) {
-        return ResponseEntity.ok(jobAdvertisementService.save(jobAdvertisement));
-    }
+    public ResponseEntity<JobAdvertisement> updateJobAdvertisement(@PathVariable("id") long id, @RequestBody JobAdvertisement jobAdvertisement) {
 
+        return new ResponseEntity<>(jobAdvertisementService.updateJobAdvertisement(id,jobAdvertisement), HttpStatus.OK);
+    }
     @GetMapping("current-company-all-jobs")
     @Secured({"ROLE_COMPANY"})
     public ResponseEntity<List<JobAdvertisement>> getCurrentCompanyJobs() {
@@ -131,10 +126,22 @@ public class JobAdvertisementController {
         return new ResponseEntity<>(jobAdvertisementService.addTag(jobId,addTagRequest), HttpStatus.CREATED);
     }
 
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    @PostMapping("/{jobId}/languages")
+    public ResponseEntity<Language> addLanguage(@PathVariable Long jobId, @RequestBody Language addLanguageRequest) {
+        return new ResponseEntity<>(jobAdvertisementService.addLanguage(jobId,addLanguageRequest), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{jobId}/languages/{langId}")
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<HttpStatus> deleteLanguageFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "langId") Long langId) {
+        jobAdvertisementService.deleteLanguageFromJob(jobId, langId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
     @DeleteMapping("/{jobId}/tags/{tagId}")
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<HttpStatus> deleteTagFromTutorial(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "tagId") Long tagId) {
-        jobAdvertisementService.deleteTagFromTutorial(jobId, tagId);
+    public ResponseEntity<HttpStatus> deleteTagFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "tagId") Long tagId) {
+        jobAdvertisementService.deleteTagFromJob(jobId, tagId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

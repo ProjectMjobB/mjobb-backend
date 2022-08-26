@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mjobb.entity.Employee;
+import com.mjobb.entity.Language;
 import com.mjobb.entity.Tag;
 import com.mjobb.request.AddTagRequest;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface JobAdvertisementService {
 
@@ -18,6 +20,8 @@ public interface JobAdvertisementService {
     void deleteFavoriteJobForCurrentUser(Long jobId);
 
     JobAdvertisement getJobAdvertisementById(Long jobId);
+
+    Language addLanguage(Long jobId, Language addLanguageRequest);
 
     JobAdvertisement save(JobAdvertisement jobAdvertisement);
 
@@ -33,6 +37,10 @@ public interface JobAdvertisementService {
 
     JobAdvertisement createJobAdvertisement(Long categoryId,Long jobTypeId,JobAdvertisement jobAdvertisement);
 
+    JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement);
+
+    void deleteLanguageFromJob(Long jobId, Long langId);
+
     JobAdvertisement applyJobForUser(long job_id);
     List<Employee> getEmployeesByAppliedJob(Long jobId);
      List<JobAdvertisement> getAllJobs();
@@ -47,5 +55,5 @@ public interface JobAdvertisementService {
     Tag addTag(Long jobId, Tag tagRequest);
     void removeTagToJobAdvertisement(AddTagRequest request);
     JobAdvertisement getJobAdvertisementById(long id);
-    void deleteTagFromTutorial(Long jobId, Long tagId);
+    void deleteTagFromJob(Long jobId, Long tagId);
 }

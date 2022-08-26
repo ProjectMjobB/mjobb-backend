@@ -25,7 +25,7 @@ public class LanguageController {
         return new ResponseEntity<>(languageService.getAllLanguages(), HttpStatus.OK);
     }
 
-    @GetMapping("/jobAdvertisements/{jobId}/languages")
+    @GetMapping("/jobAdvertisements/{jobId}/languages-by-id")
     public ResponseEntity<List<Language>> getAllLanguagesByJobAdvertisementId(@PathVariable(value = "jobId") Long jobId) {
         return new ResponseEntity<>(languageService.getAllLanguagesByJobAdvertisementId(jobId), HttpStatus.OK);
     }
@@ -39,9 +39,9 @@ public class LanguageController {
     public ResponseEntity<List<JobAdvertisement>> getAllJobsByLanguageId(@PathVariable(value = "languageId") Long languageId) {
         return new ResponseEntity<>(languageService.getAllJobsByLanguageId(languageId), HttpStatus.OK);
     }
-    @PostMapping("/jobAdvertisement/{jobId}/languages")
-    public ResponseEntity<Language> addLanguage(@PathVariable(value = "languageId") Long languageId, @RequestBody Language languageRequest) {
-        return new ResponseEntity<>(languageService.addLanguage(languageId,languageRequest), HttpStatus.CREATED);
+    @PostMapping("/jobAdvertisement/{jobId}/{languageId}")
+    public ResponseEntity<Language> addLanguage(@PathVariable(value = "jobId") Long jobId,@PathVariable(value = "languageId") Long languageId) {
+        return new ResponseEntity<>(languageService.addLanguage(jobId,languageId), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/jobAdvertisement/{jobId}/languages/{languageId}")

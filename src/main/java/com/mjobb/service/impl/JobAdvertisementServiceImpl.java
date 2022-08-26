@@ -1,6 +1,5 @@
 package com.mjobb.service.impl;
 
-import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.*;
 import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.exception.WebServiceException;
@@ -10,13 +9,9 @@ import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +31,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
 
     private final JobTypeRepository jobTypeRepository;
 
+    private final LanguageRepository languageRepository;
 
     public JobAdvertisement getJobAdvertisementById(long id) {
         JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(id)
@@ -81,18 +77,37 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
+    public Language addLanguage(Long jobId, Language addLanguageRequest) {
+        Language language = jobAdvertisementRepository.findById(jobId).map(job -> {
+            long langId = addLanguageRequest.getId();
+
+            // tag is existed
+            if (langId != 0L) {
+                Language _lang = languageRepository.findById(langId)
+                        .orElseThrow(() -> new WebServiceException("Not found Language with id = " + langId));
+                job.addLanguage(_lang);
+                jobAdvertisementRepository.save(job);
+                return _lang;
+            }
+
+            // add and create new Tag
+            job.addLanguage(addLanguageRequest);
+            return languageRepository.save(addLanguageRequest);
+        }).orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + jobId));
+        return language;
+    }
+
+    @Override
     public JobAdvertisement save(@NotNull JobAdvertisement jobAdvertisement) {
-        Date date = new Date();
-        if (Objects.isNull(jobAdvertisement.getCreatedDate())) {
-            jobAdvertisement.setCreatedDate(date);
-        } else {
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+
             User company = jobAdvertisement.getCompany();
             User user = userService.getCurrentUser();
             if (!company.getId().equals(user.getId())) {
                 throw new WebServiceException("You are not authorized to perform this action");
-            }
         }
-
+        jobAdvertisement.setCreatedDate(date);
         jobAdvertisement.setUpdatedDate(date);
         return jobAdvertisementRepository.save(jobAdvertisement);
     }
@@ -241,11 +256,47 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public void deleteTagFromTutorial( Long jobId, Long tagId) {
+    public void deleteTagFromJob( Long jobId, Long tagId) {
         JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId)
                 .orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
 
         jobAdvertisement.removeTag(tagId);
+        jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
+
+    @Override
+    public JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement) {
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+
+
+        JobAdvertisement _job = jobAdvertisementRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("Not found Job with id = " + id));
+        _job.setTitle(jobAdvertisement.getTitle());
+        _job.setAccepted(true);
+        _job.setAddress(jobAdvertisement.getAddress());
+        _job.setCity(jobAdvertisement.getCity());
+        _job.setCountry(jobAdvertisement.getCountry());
+        _job.setCreatedDate(jobAdvertisement.getCreatedDate());
+        _job.setUpdatedDate(date);
+        _job.setFile(jobAdvertisement.getFile());
+        _job.setMaximumSalary(jobAdvertisement.getMaximumSalary());
+        _job.setMinimumSalary(jobAdvertisement.getMinimumSalary());
+        _job.setTitle(jobAdvertisement.getTitle());
+        _job.setWorkingType(jobAdvertisement.getWorkingType());
+        _job.setYearsOfExperience(jobAdvertisement.getYearsOfExperience());
+
+        return jobAdvertisementRepository.save(_job);
+
+    }
+
+    @Override
+    public void deleteLanguageFromJob( Long jobId, Long langId) {
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId)
+                .orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+
+        jobAdvertisement.removeLanguage(langId);
         jobAdvertisementRepository.save(jobAdvertisement);
     }
 

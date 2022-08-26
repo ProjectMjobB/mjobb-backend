@@ -3,6 +3,7 @@ package com.mjobb.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,8 +18,10 @@ import java.util.Set;
 public class Employee extends User {
 
     private String areaOfInterest;
-    private String workingArea;
+    private String requestedWorkingType;
     private Long age;
+    @Nullable
+    private int yearsOfExperience;
     private BigDecimal currentSalary;
     private BigDecimal requestedSalary;
     @OneToMany

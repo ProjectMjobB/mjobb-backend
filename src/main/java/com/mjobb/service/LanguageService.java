@@ -21,6 +21,7 @@ public interface LanguageService {
 
     List<JobAdvertisement> getAllJobsByLanguageId(Long languageId);
 
-    Language addLanguage(Long jobId, Language languageRequest);
+    Language addLanguage(Long jobId, Long languageId);
+
     void deleteLanguageFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "languageId") Long languageId);
 }

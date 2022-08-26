@@ -35,7 +35,6 @@ public class JobAdvertisement implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private JobType jobType;
-
     private String workingType;
     private String country;
     private String city;

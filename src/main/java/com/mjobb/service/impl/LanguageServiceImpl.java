@@ -64,9 +64,11 @@ public class LanguageServiceImpl implements LanguageService {
         return jobs;
     }
 
-    public Language addLanguage(Long jobId, Language languageRequest) {
+    @Override
+    public Language addLanguage(Long jobId, Long languageId) {
         Language language = jobAdvertisementRepository.findById(jobId).map(job -> {
-            long langId = languageRequest.getId();
+            long langId = languageId;
+            Language languageRequest = languageRepository.findById(langId).orElseThrow(() -> new WebServiceException("Not found Language with id = " + langId));
 
             // tag is existed
             if (langId != 0L) {
