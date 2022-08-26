@@ -25,6 +25,8 @@ public interface UserService {
 
     void save(User user);
 
+    void saveAndFlush(User user);
+
     void blockUser(Long userId);
 
     void unblockUser(Long userId);

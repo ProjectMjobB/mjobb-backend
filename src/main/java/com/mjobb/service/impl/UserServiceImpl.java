@@ -114,6 +114,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveAndFlush(User user) {
+        userRepository.saveAndFlush(user);
+    }
+
+    @Override
     public void blockUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
         user.setEnabled(false);

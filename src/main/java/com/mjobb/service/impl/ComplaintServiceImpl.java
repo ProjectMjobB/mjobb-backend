@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ComplaintServiceImpl implements ComplaintService {
+public class  ComplaintServiceImpl implements ComplaintService {
 
     private final UserService userService;
     private final JobAdvertisementService jobAdvertisementService;
@@ -41,8 +41,8 @@ public class ComplaintServiceImpl implements ComplaintService {
         toUser.setComplaints(complaints);
 
 
-        userService.save(toUser);
-        userService.save(fromUser);
+        userService.saveAndFlush(toUser);
+        userService.saveAndFlush(fromUser);
 
     }
 
