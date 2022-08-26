@@ -20,34 +20,49 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/users/{userId}/comments")
+    @GetMapping("/users/{userId}/to-user/all-comments")
     public ResponseEntity<List<Comment>> getAllCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
         return new ResponseEntity<>(commentService.getAllCommentsByToUserId(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/comments/{id}")
+    @GetMapping("/users/{userId}/from-user/all-comments")
+    public ResponseEntity<List<Comment>> getAllCommentsByFromUserId(@PathVariable(value = "userId") Long userId) {
+        return new ResponseEntity<>(commentService.getAllCommentsByFromUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}/to-user/accepted-comments")
+    public ResponseEntity<List<Comment>> getAcceptedCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
+        return new ResponseEntity<>(commentService.getAcceptedCommentsByToUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}/from-user/accepted-comments")
+    public ResponseEntity<List<Comment>> getAcceptedCommentsByFromUserId(@PathVariable(value = "userId") Long userId) {
+        return new ResponseEntity<>(commentService.getAcceptedCommentsByFromUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable(value = "id") Long id) {
 
         return new ResponseEntity<>(commentService.getCommentById(id), HttpStatus.OK);
     }
 
-    @PostMapping("user-to-user")
-    @Secured({"ROLE_EMPLOYEE", "ROLE_COMPANY"})
-    public ResponseEntity<Void> userCommentToCompany(@RequestBody CommentRequest request) {
-        commentService.userCommentToUser(request);
-        return ResponseEntity.ok().build();
+    @PutMapping("/{toUserId}/{id}")
+    public ResponseEntity<Comment> updateComment(@PathVariable("toUserId") long toUserId,@PathVariable("id") long id, @RequestBody CommentRequest commentRequest) {
+        return new ResponseEntity<>(commentService.updateComment(toUserId,id,commentRequest), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable("id") long id, @RequestBody Comment commentRequest) {
-
-        return new ResponseEntity<>(commentService.updateComment(id,commentRequest), HttpStatus.OK);
-    }
-
+    @Secured({"ROLE_EMPLOYEE", "ROLE_COMPANY","ROLE_ADMIN","ROLE_MODERATOR"})
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteComment(@PathVariable("id") long id) {
         commentService.deleteComment(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @Secured({"ROLE_EMPLOYEE", "ROLE_COMPANY"})
+    @PostMapping("/users/{toUserId}/comments")
+    public ResponseEntity<Comment> createComment(@PathVariable(value = "toUserId") Long toUserId,
+                                                 @RequestBody Comment commentRequest) {
+
+        return new ResponseEntity<>(commentService.createComment(toUserId,commentRequest), HttpStatus.CREATED);
     }
 
 

@@ -8,6 +8,7 @@ import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +32,16 @@ public class AdminController {
     }
 
 
-    @PostMapping("comments/approve")
+    @PostMapping("comments/{comment_id}/approve")
     @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<Void> approveComments(@RequestBody List<Comment> comments) {
-        commentService.approveComments(comments);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Comment> approveComment(@PathVariable Long comment_id) {
+        return new ResponseEntity<>(commentService.approveComment(comment_id), HttpStatus.OK);
     }
 
-    @PostMapping("comments/reject")
+    @PostMapping("comments/{comment_id}/reject")
     @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<Void> rejectComments(@RequestBody List<Comment> comments) {
-        commentService.rejectComments(comments);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Comment> rejectComment(@PathVariable Long comment_id) {
+        return new ResponseEntity<>(commentService.rejectComment(comment_id), HttpStatus.OK);
     }
 
     @GetMapping("jobs/waiting")
