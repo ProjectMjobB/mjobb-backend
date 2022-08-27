@@ -128,6 +128,18 @@ public class JobAdvertisementController {
     }
 
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    @PostMapping("/{jobId}/many-tags")
+    public ResponseEntity<JobAdvertisement> addManyTag(@PathVariable Long jobId, @RequestBody List<Integer> tagIds) {
+        return new ResponseEntity<>(jobAdvertisementService.addManyTag(jobId,tagIds), HttpStatus.CREATED);
+    }
+
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
+    @PostMapping("/{jobId}/many-languages")
+    public ResponseEntity<JobAdvertisement> addManyLanguages(@PathVariable Long jobId, @RequestBody List<Integer> languageIds) {
+        return new ResponseEntity<>(jobAdvertisementService.addManyLanguage(jobId,languageIds), HttpStatus.CREATED);
+    }
+
+    @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
     @PostMapping("/{jobId}/languages")
     public ResponseEntity<Language> addLanguage(@PathVariable Long jobId, @RequestBody Language addLanguageRequest) {
         return new ResponseEntity<>(jobAdvertisementService.addLanguage(jobId,addLanguageRequest), HttpStatus.CREATED);

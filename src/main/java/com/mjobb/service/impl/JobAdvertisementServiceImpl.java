@@ -264,6 +264,22 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         jobAdvertisementRepository.saveAndFlush(jobAdvertisement);
     }
 
+    @Override
+    public JobAdvertisement addManyTag(Long jobId, List<Integer> tagIds) {
+        for (Integer tagId : tagIds) {
+            addTag(jobId, tagRepository.findById(Long.valueOf(tagId)).orElseThrow(() -> new WebServiceException("Not found Tag with id = " + tagId)));
+        }
+       return jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+    }
+
+    @Override
+    public JobAdvertisement addManyLanguage(Long jobId, List<Integer> languageIds) {
+        for (Integer languageId : languageIds) {
+            addLanguage(jobId, languageRepository.findById(Long.valueOf(languageId)).orElseThrow(() -> new WebServiceException("Not found Language with id = " + languageId)));
+        }
+        return jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+    }
+
 
     @Override
     public JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement) {

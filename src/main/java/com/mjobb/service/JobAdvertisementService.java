@@ -58,4 +58,7 @@ public interface JobAdvertisementService {
     void deleteTagFromJob(Long jobId, Long tagId);
 
     void saveAndFlush(JobAdvertisement jobAdvertisement);
+    JobAdvertisement addManyTag(Long jobId, List<Integer> tagIds);
+
+    JobAdvertisement addManyLanguage(Long jobId, List<Integer> languageIds);
 }
