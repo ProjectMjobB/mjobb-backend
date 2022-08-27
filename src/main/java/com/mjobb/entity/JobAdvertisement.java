@@ -3,6 +3,8 @@ package com.mjobb.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -51,7 +53,8 @@ public class JobAdvertisement implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Company company;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "job_complaints",
             joinColumns = {@JoinColumn(name = "job_advertisement_id")},
             inverseJoinColumns = {@JoinColumn(name = "complaint_id")})

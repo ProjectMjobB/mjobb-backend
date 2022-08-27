@@ -259,6 +259,11 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         jobAdvertisementRepository.save(jobAdvertisement);
     }
 
+    @Override
+    public void saveAndFlush(JobAdvertisement jobAdvertisement) {
+        jobAdvertisementRepository.saveAndFlush(jobAdvertisement);
+    }
+
 
     @Override
     public JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement) {

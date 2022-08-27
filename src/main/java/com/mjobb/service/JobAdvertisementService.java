@@ -56,4 +56,6 @@ public interface JobAdvertisementService {
     void removeTagToJobAdvertisement(AddTagRequest request);
     JobAdvertisement getJobAdvertisementById(long id);
     void deleteTagFromJob(Long jobId, Long tagId);
+
+    void saveAndFlush(JobAdvertisement jobAdvertisement);
 }

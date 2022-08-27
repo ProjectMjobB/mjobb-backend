@@ -66,7 +66,7 @@ public class  ComplaintServiceImpl implements ComplaintService {
         jobAdvertisement.setComplaints(complaints);
 
 
-        jobAdvertisementService.save(jobAdvertisement);
-        userService.save(fromUser);
+        jobAdvertisementService.saveAndFlush(jobAdvertisement);
+        userService.saveAndFlush(fromUser);
     }
 }
