@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1.0/tags/")
 @RequiredArgsConstructor
 @ApiOperation("Tags API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TagController {
 
     private final TagService tagService;
