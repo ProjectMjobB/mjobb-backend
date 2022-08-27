@@ -107,10 +107,10 @@ public class JobAdvertisementController {
         return ResponseEntity.ok(jobAdvertisementService.applyJobForUser(job_id));
     }
 
-    @GetMapping("/applied-users")
+    @GetMapping("{job_id}/applied-users")
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
-    public ResponseEntity<List<Employee>> getApplications(@RequestParam Long id) {
-        return ResponseEntity.ok(jobAdvertisementService.getEmployeesByAppliedJob(id));
+    public ResponseEntity<List<Employee>> getApplications(@PathVariable long job_id) {
+        return ResponseEntity.ok(jobAdvertisementService.getEmployeesByAppliedJob(job_id));
     }
 
 

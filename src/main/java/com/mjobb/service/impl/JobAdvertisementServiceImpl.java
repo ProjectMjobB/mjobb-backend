@@ -320,7 +320,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     }
 
     @Override
-    public List<Employee> getEmployeesByAppliedJob(Long jobId) {
+    public List<Employee> getEmployeesByAppliedJob(long jobId) {
 
         JobAdvertisement job = getJobAdvertisementById(jobId);
         List<Application> applications = job.getApplications();

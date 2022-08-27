@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class JobAdvertisementDto {
 
     private String title;
+    private String description;
     private Long yearsOfExperience;
     private BigDecimal minimumSalary;
     private BigDecimal maximumSalary;

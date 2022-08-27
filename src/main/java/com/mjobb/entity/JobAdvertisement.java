@@ -31,6 +31,7 @@ public class JobAdvertisement implements Serializable {
     private BigDecimal minimumSalary;
     private BigDecimal maximumSalary;
     private String file;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "job_type_id", nullable = false)

@@ -42,7 +42,7 @@ public interface JobAdvertisementService {
     void deleteLanguageFromJob(Long jobId, Long langId);
 
     JobAdvertisement applyJobForUser(long job_id);
-    List<Employee> getEmployeesByAppliedJob(Long jobId);
+    List<Employee> getEmployeesByAppliedJob(long jobId);
      List<JobAdvertisement> getAllJobs();
      List<JobAdvertisement> getOpenedJobs();
      List<JobAdvertisement> getAllJobsByCategoryId(Long categoryId);
