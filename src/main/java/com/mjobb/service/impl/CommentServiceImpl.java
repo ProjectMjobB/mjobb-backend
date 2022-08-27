@@ -6,6 +6,7 @@ import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.CommentRepository;
 import com.mjobb.repository.UserRepository;
 import com.mjobb.request.CommentRequest;
+import com.mjobb.response.CommentResponse;
 import com.mjobb.service.CommentService;
 import com.mjobb.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -74,12 +75,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAllCommentsByToUserId(Long userId) {
+    public List<CommentResponse> getAllCommentsByToUserId(Long userId) {
+
+        List<CommentResponse> commentResponses = new ArrayList<>();
         if (userService.getUserById(userId) == null) {
             throw new WebServiceException("Not found User with id = " + userId);
         }
         List<Comment> comments = commentRepository.findByToUserId(userId);
-        return comments;
+
+        for (Comment comment : comments) {
+            CommentResponse commentResponse = new CommentResponse();
+            commentResponse.setId(comment.getId());
+            commentResponse.setComment(comment.getComment());
+            commentResponse.setPoint(comment.getPoint());
+            User fromUser = userRepository.findById(comment.getFromUserId()).orElse(null);
+            commentResponse.setFromUser(fromUser);
+            commentResponse.setToUser(comment.getToUser());
+            commentResponses.add(commentResponse);
+        }
+        return commentResponses;
     }
 
     @Override
@@ -113,12 +127,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAcceptedCommentsByToUserId(Long userId) {
+    public List<CommentResponse> getAcceptedCommentsByToUserId(Long userId) {
+        List<CommentResponse> commentResponses = new ArrayList<>();
         if (userService.getUserById(userId) == null) {
             throw new WebServiceException("Not found User with id = " + userId);
         }
-        List<Comment> comments = commentRepository.findByToUserIdAndAccepted(userId,true);
-        return comments;
+        List<Comment> comments = commentRepository.findByToUserId(userId);
+
+        for (Comment comment : comments) {
+            CommentResponse commentResponse = new CommentResponse();
+            commentResponse.setId(comment.getId());
+            commentResponse.setComment(comment.getComment());
+            commentResponse.setPoint(comment.getPoint());
+            User fromUser = userRepository.findById(comment.getFromUserId()).orElse(null);
+            commentResponse.setFromUser(fromUser);
+            commentResponse.setToUser(comment.getToUser());
+            commentResponses.add(commentResponse);
+        }
+        return commentResponses;
     }
 
     @Override

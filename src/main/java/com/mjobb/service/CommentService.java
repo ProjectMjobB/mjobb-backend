@@ -2,6 +2,7 @@ package com.mjobb.service;
 
 import com.mjobb.entity.Comment;
 import com.mjobb.request.CommentRequest;
+import com.mjobb.response.CommentResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -17,7 +18,7 @@ public interface CommentService {
 
     Comment updateComment(long toUserId,long id, @RequestBody CommentRequest commentRequest);
     void deleteComment(long id);
-    List<Comment> getAllCommentsByToUserId(Long userId);
+    List<CommentResponse> getAllCommentsByToUserId(Long userId);
 
     Comment createComment(@PathVariable(value = "toUserId") Long toUserId,
                            @RequestBody Comment commentRequest);
@@ -26,7 +27,7 @@ public interface CommentService {
 
     List<Comment> getAllCommentsByFromUserId(Long userId);
 
-    List<Comment> getAcceptedCommentsByToUserId(Long userId);
+    List<CommentResponse> getAcceptedCommentsByToUserId(Long userId);
 
     List<Comment> getAcceptedCommentsByFromUserId(Long userId);
 

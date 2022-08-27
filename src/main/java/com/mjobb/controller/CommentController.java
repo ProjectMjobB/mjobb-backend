@@ -1,7 +1,9 @@
 package com.mjobb.controller;
 
 import com.mjobb.entity.Comment;
+import com.mjobb.entity.User;
 import com.mjobb.request.CommentRequest;
+import com.mjobb.response.CommentResponse;
 import com.mjobb.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/users/{userId}/to-user/all-comments")
-    public ResponseEntity<List<Comment>> getAllCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
+    public ResponseEntity<List<CommentResponse>> getAllCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
         return new ResponseEntity<>(commentService.getAllCommentsByToUserId(userId), HttpStatus.OK);
     }
 
@@ -32,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("/users/{userId}/to-user/accepted-comments")
-    public ResponseEntity<List<Comment>> getAcceptedCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
+    public ResponseEntity<List<CommentResponse>> getAcceptedCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
         return new ResponseEntity<>(commentService.getAcceptedCommentsByToUserId(userId), HttpStatus.OK);
     }
 
