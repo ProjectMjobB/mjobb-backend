@@ -22,7 +22,7 @@ public class  ComplaintServiceImpl implements ComplaintService {
     private final JobAdvertisementService jobAdvertisementService;
 
     @Override
-    public void userComplaintToUser(ComplaintRequest request) {
+    public Complaint userComplaintToUser(ComplaintRequest request) {
         User fromUser = userService.getCurrentUser();
         User toUser = userService.getUserById(request.getToUserId());
 
@@ -41,13 +41,19 @@ public class  ComplaintServiceImpl implements ComplaintService {
         toUser.setComplaints(complaints);
 
 
-        userService.saveAndFlush(toUser);
-        userService.saveAndFlush(fromUser);
+        List<User> users = new ArrayList<>();
+        users.add(fromUser);
+        users.add(toUser);
+        for(User user : users) {
+            userService.saveAndFlush(user);
+        }
+
+        return complaint;
 
     }
 
     @Override
-    public void userComplaintToJob(ComplaintRequest request) {
+    public Complaint userComplaintToJob(ComplaintRequest request) {
         User fromUser = userService.getCurrentUser();
         JobAdvertisement jobAdvertisement = jobAdvertisementService.getJobAdvertisementById(request.getJobId());
 
@@ -68,5 +74,7 @@ public class  ComplaintServiceImpl implements ComplaintService {
 
         jobAdvertisementService.saveAndFlush(jobAdvertisement);
         userService.saveAndFlush(fromUser);
+
+        return complaint;
     }
 }

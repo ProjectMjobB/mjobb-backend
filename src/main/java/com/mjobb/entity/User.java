@@ -36,6 +36,7 @@ public class User {
     private String contactInformation;
     private Double generalPoint;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_complaints",
             joinColumns = {@JoinColumn(name = "user_id")},

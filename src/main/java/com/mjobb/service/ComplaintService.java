@@ -1,10 +1,11 @@
 package com.mjobb.service;
 
+import com.mjobb.entity.Complaint;
 import com.mjobb.request.ComplaintRequest;
 
 public interface ComplaintService {
 
-    void userComplaintToUser(ComplaintRequest request);
+    Complaint userComplaintToUser(ComplaintRequest request);
 
-    void userComplaintToJob(ComplaintRequest request);
+    Complaint userComplaintToJob(ComplaintRequest request);
 }
