@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1.0/employees/")
 @RequiredArgsConstructor
 @ApiOperation("Employees API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EmployeeController {
 
     private final EmployeeService employeeService;

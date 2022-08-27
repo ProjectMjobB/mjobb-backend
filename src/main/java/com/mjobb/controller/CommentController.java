@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1.0/comments/")
 @RequiredArgsConstructor
 @ApiOperation("Comments API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CommentController {
 
     private final CommentService commentService;

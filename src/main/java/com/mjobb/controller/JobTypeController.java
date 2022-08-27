@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1.0/job-types/")
 @RequiredArgsConstructor
 @ApiOperation("Job Type API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class JobTypeController {
     private final JobTypeService jobTypeService;
 

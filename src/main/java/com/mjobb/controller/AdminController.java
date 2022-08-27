@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1.0/admin/")
 @RequiredArgsConstructor
 @ApiOperation("Admin API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
 
     private final CommentService commentService;

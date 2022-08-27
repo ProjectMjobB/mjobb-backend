@@ -19,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1.0/jobs/")
 @RequiredArgsConstructor
 @ApiOperation("Jobs API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class JobAdvertisementController {
 
     private final JobAdvertisementService jobAdvertisementService;

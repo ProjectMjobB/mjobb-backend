@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1.0/categories/")
 @RequiredArgsConstructor
 @ApiOperation("Categories API")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CategoryController {
 
 
