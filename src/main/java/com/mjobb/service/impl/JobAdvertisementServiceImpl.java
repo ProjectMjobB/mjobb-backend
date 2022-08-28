@@ -5,6 +5,8 @@ import com.mjobb.exception.UserNotFoundException;
 import com.mjobb.exception.WebServiceException;
 import com.mjobb.repository.*;
 import com.mjobb.request.AddTagRequest;
+import com.mjobb.response.JobAdvertisementResponse;
+import com.mjobb.service.CategoryService;
 import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import com.sun.istack.NotNull;
@@ -24,6 +26,8 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final UserService userService;
     private final CompanyRepository companyRepository;
     private final ApplicationRepository applicationRepository;
+
+    private final CategoryService categoryService;
 
     private final CategoryRepository categoryRepository;
 
@@ -283,6 +287,41 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     @Override
     public List<User> getBestMatchUsersForJob(Long job_id) {
         return userService.getAllActiveUsers();
+    }
+
+    @Override
+    public JobAdvertisementResponse getJobAdvertisementResponseById(long id) {
+        Date date = new Date();
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(id)
+                .orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + id));
+       JobAdvertisementResponse response = new JobAdvertisementResponse();
+          response.setId(jobAdvertisement.getId());
+            response.setTitle(jobAdvertisement.getTitle());
+            response.setAddress(jobAdvertisement.getAddress());
+            response.setYearsOfExperience(jobAdvertisement.getYearsOfExperience());
+            response.setMinimumSalary(jobAdvertisement.getMinimumSalary());
+            response.setMaximumSalary(jobAdvertisement.getMaximumSalary());
+            response.setFile(jobAdvertisement.getFile());
+            response.setDescription(jobAdvertisement.getDescription());
+            response.setJobType(jobAdvertisement.getJobType());
+            response.setWorkingType(jobAdvertisement.getWorkingType());
+            response.setCountry(jobAdvertisement.getCountry());
+            response.setCity(jobAdvertisement.getCity());
+            response.setApplications(jobAdvertisement.getApplications());
+            response.setCompany(jobAdvertisement.getCompany());
+            response.setComplaints(jobAdvertisement.getComplaints());
+            response.setAccepted(response.isAccepted());
+            response.setCreatedDate(jobAdvertisement.getCreatedDate());
+            response.setUpdatedDate(jobAdvertisement.getUpdatedDate());
+            response.setTags(jobAdvertisement.getTags());
+            response.setLanguages(jobAdvertisement.getLanguages());
+
+
+        Category category = categoryService.getCategoryById(jobAdvertisement.getCategory().getId());
+        response.setCategory(category);
+
+
+        return response;
     }
 
 

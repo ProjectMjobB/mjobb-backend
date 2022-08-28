@@ -3,6 +3,7 @@ package com.mjobb.controller;
 import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.*;
 import com.mjobb.request.AddTagRequest;
+import com.mjobb.response.JobAdvertisementResponse;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiOperation;
@@ -87,8 +88,8 @@ public class JobAdvertisementController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JobAdvertisement> getJobAdvertisementById(@PathVariable("id") long id) {
-        return new ResponseEntity<>(jobAdvertisementService.getJobAdvertisementById(id), HttpStatus.OK);
+    public ResponseEntity<JobAdvertisementResponse> getJobAdvertisementResponseById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(jobAdvertisementService.getJobAdvertisementResponseById(id), HttpStatus.OK);
     }
 
     @GetMapping("current-company-opened-jobs")
