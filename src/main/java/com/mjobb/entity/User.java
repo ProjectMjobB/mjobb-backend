@@ -35,7 +35,7 @@ public class User {
     private String about;
     private String contactInformation;
     private Double generalPoint;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_complaints",
@@ -52,4 +52,16 @@ public class User {
     private Set<Role> roles;
     private boolean enabled;
 
-}
+    public void setComplaints(List<Complaint> complaints) {
+        if (this.complaints == null) {
+            this.complaints = complaints;
+        } else if (this.complaints != complaints) { // not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection
+            this.complaints.clear();
+            if (complaints != null) {
+                this.complaints.addAll(complaints);
+            }
+        }
+    }
+
+
+        }
