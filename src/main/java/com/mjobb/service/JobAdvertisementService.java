@@ -1,14 +1,11 @@
 package com.mjobb.service;
 
 import com.mjobb.dto.JobAdvertisementDto;
-import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.mjobb.entity.Employee;
-import com.mjobb.entity.Language;
-import com.mjobb.entity.Tag;
 import com.mjobb.request.AddTagRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,4 +58,6 @@ public interface JobAdvertisementService {
     JobAdvertisement addManyTag(Long jobId, List<Integer> tagIds);
 
     JobAdvertisement addManyLanguage(Long jobId, List<Integer> languageIds);
+
+    List<User> getBestMatchUsersForJob(Long job_id);
 }

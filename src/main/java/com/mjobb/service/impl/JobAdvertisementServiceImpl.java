@@ -280,6 +280,11 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
     }
 
+    @Override
+    public List<User> getBestMatchUsersForJob(Long job_id) {
+        return userService.getAllActiveUsers();
+    }
+
 
     @Override
     public JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement) {

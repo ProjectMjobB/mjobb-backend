@@ -31,6 +31,11 @@ public class JobAdvertisementController {
         return ResponseEntity.accepted().build();
     }
 
+    @GetMapping("{job_id}/best-match-users")
+    public ResponseEntity<List<User>> getBestMatchUsersForJob(@PathVariable @NotNull Long job_id) {
+        return ResponseEntity.ok(jobAdvertisementService.getBestMatchUsersForJob(job_id));
+    }
+
     @GetMapping("delete/favorite")
     @Secured({"ROLE_EMPLOYEE"})
     public ResponseEntity<Void> deleteFavoriteJobForCurrentUser(@RequestParam @NotNull Long jobId) {
