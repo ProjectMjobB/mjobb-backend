@@ -340,8 +340,9 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
 
         JobAdvertisement job = getJobAdvertisementById(jobId);
         List<Application> applications = job.getApplications();
+        List<Employee> employees = new ArrayList<>();
         if (CollectionUtils.isEmpty(applications)) {
-          return null;
+          return employees;
         }
 
         return applications.stream().map(Application::getEmployee).toList();
