@@ -24,4 +24,6 @@ public interface LanguageService {
     Language addLanguage(Long jobId, Long languageId);
 
     void deleteLanguageFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "languageId") Long languageId);
+
+    Language createLanguage(Language language);
 }

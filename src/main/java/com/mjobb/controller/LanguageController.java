@@ -45,6 +45,11 @@ public class LanguageController {
         return new ResponseEntity<>(languageService.addLanguage(jobId,languageId), HttpStatus.CREATED);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<Language> createLanguage(@RequestBody Language language) {
+        return new ResponseEntity<>(languageService.createLanguage(language), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/jobAdvertisement/{jobId}/languages/{languageId}")
     public ResponseEntity<HttpStatus> deleteLanguageFromJob(@PathVariable(value = "jobId") Long jobId, @PathVariable(value = "languageId") Long languageId) {
         languageService.deleteLanguageFromJob(jobId, languageId);

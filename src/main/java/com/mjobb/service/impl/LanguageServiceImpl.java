@@ -94,4 +94,9 @@ public class LanguageServiceImpl implements LanguageService {
         job.removeLanguage(languageId);
         jobAdvertisementRepository.save(job);
     }
+
+    @Override
+    public Language createLanguage(Language language) {
+        return languageRepository.save(language);
+    }
 }
