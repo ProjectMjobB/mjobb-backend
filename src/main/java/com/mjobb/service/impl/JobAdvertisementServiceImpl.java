@@ -341,7 +341,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         JobAdvertisement job = getJobAdvertisementById(jobId);
         List<Application> applications = job.getApplications();
         if (CollectionUtils.isEmpty(applications)) {
-            throw new WebServiceException("No applications for this job");
+          return null;
         }
 
         return applications.stream().map(Application::getEmployee).toList();
