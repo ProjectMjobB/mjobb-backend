@@ -17,10 +17,7 @@ public class Resume {
     private Long id;
     private String title;
     private String description;
-    @Lob
-    private byte[] cv;
-    @OneToOne
-    private Employee user;
+    private Long user_id;
     @OneToMany
     private List<KeySkill> keySkills;
     @OneToMany

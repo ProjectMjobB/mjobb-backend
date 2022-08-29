@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class UserDto {
@@ -27,6 +29,16 @@ public class UserDto {
     private String website;
     @ApiModelProperty(notes = "Company fd", example = "User fd information", required = false)
     private String foundationDate;
+    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    private int yearsOfExperience;
+    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    private BigDecimal minimumSalary;
+    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    private BigDecimal maximumSalary;
+    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    private String workingArea;
+    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    private Long age;
 
     @ApiModelProperty(notes = "Company point", example = "User point information", required = false)
     private Double generalPoint;
