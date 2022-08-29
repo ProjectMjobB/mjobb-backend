@@ -1,10 +1,14 @@
 package com.mjobb.controller;
 
 import com.mjobb.dto.JobAdvertisementDto;
+import com.mjobb.entity.Employee;
+import com.mjobb.entity.JobAdvertisement;
+import com.mjobb.entity.Language;
 import com.mjobb.mapper.CustomModelMapper;
 import com.mjobb.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,15 @@ public class EmployeeController {
     public ResponseEntity<Void> addLanguage(@RequestBody String language) {
         employeeService.addLanguage(language);
         return ResponseEntity.accepted().build();
+    }
+
+    @GetMapping("{empId}/languages/")
+    public ResponseEntity<List<Language>> getLanguagesByEmpId(@PathVariable Long empId) {
+        return ResponseEntity.ok(employeeService.getLanguagesByEmpId(empId));
+    }
+    @PostMapping("/{empId}/many-languages")
+    public ResponseEntity<Employee> addManyLanguage(@PathVariable Long empId, @RequestBody List<Integer> langIds) {
+        return new ResponseEntity<>(employeeService.addManyLanguage(empId,langIds), HttpStatus.CREATED);
     }
 
     @GetMapping("remove-language")

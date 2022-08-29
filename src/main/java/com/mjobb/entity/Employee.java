@@ -25,13 +25,12 @@ public class Employee extends User {
     private int yearsOfExperience;
     private BigDecimal currentSalary;
     private BigDecimal requestedSalary;
-    @OneToMany
-    private List<WorkingArea> workingAreas;
+    private String workingArea;
 
     @ManyToMany
-    @JoinTable(name = "users_languages",
-            joinColumns = {@JoinColumn(name = "employee_id")},
-            inverseJoinColumns = {@JoinColumn(name = "languages_id")})
+    @JoinTable(name = "employee_languages",
+            joinColumns = { @JoinColumn(name = "employee_id") },
+            inverseJoinColumns = { @JoinColumn(name = "language_id") })
     private Set<Language> languages = new HashSet<>();
 
 
@@ -52,10 +51,10 @@ public class Employee extends User {
     }
 
     public void removeLanguage(long langId) {
-        Language language = this.languages.stream().filter(t -> t.getId() == langId).findFirst().orElse(null);
-        if (language != null) {
-            this.languages.remove(language);
-            language.getEmployees().remove(this);
+        Language lang = this.languages.stream().filter(t -> t.getId() == langId).findFirst().orElse(null);
+        if (lang != null) {
+            this.languages.remove(lang);
+            lang.getEmployees().remove(this);
         }
     }
 
