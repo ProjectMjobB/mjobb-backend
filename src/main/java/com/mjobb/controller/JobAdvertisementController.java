@@ -4,6 +4,7 @@ import com.mjobb.dto.JobAdvertisementDto;
 import com.mjobb.entity.*;
 import com.mjobb.request.AddTagRequest;
 import com.mjobb.response.JobAdvertisementResponse;
+import com.mjobb.service.AprioriService;
 import com.mjobb.service.JobAdvertisementService;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class JobAdvertisementController {
 
     private final JobAdvertisementService jobAdvertisementService;
+    private final AprioriService aprioriService;
 
     @GetMapping("add/favorite")
     @Secured({"ROLE_EMPLOYEE"})
@@ -124,6 +126,12 @@ public class JobAdvertisementController {
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> deleteJob(@RequestParam Long id) {
         jobAdvertisementService.deleteJobAdvertisement(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{job_id}/apriori-algorithm")
+    public ResponseEntity<Void> getAprioriAlgorithm(@PathVariable Long job_id) {
+        aprioriService.setData(job_id);
         return ResponseEntity.ok().build();
     }
 

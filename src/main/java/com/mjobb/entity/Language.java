@@ -21,17 +21,26 @@ public class Language {
     private Long id;
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "users_languages",
-            joinColumns = {@JoinColumn(name = "languages_id")},
-            inverseJoinColumns = {@JoinColumn(name = "employee_id")})
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "languages")
+    @JsonIgnore
     private Set<Employee> employees = new HashSet<>();
 
-    public Set<Employee> getEmployees() {
-        return employees;
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
+        employee.getLanguages().add(this);
     }
-    public void setTutorials(Set<Employee> employees) {
-        this.employees = employees;
+
+    public void removeEmployee(long empId) {
+        Employee employee = this.employees.stream().filter(t -> t.getId() == empId).findFirst().orElse(null);
+        if (employee != null) {
+            this.employees.remove(employee);
+            employee.getLanguages().remove(this);
+        }
     }
 
     @ManyToMany(fetch = FetchType.LAZY,
