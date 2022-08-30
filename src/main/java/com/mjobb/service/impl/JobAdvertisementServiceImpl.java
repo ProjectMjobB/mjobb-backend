@@ -11,6 +11,7 @@ import com.mjobb.service.JobAdvertisementService;
 import com.mjobb.service.UserService;
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -323,6 +324,11 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
 
 
         return response;
+    }
+
+    @Override
+    public List<JobAdvertisement> findAll(Specification<JobAdvertisement> where) {
+        return jobAdvertisementRepository.findAll(Specification.where(where));
     }
 
 

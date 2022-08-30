@@ -6,9 +6,11 @@ import com.mjobb.request.AddTagRequest;
 import com.mjobb.response.JobAdvertisementResponse;
 import com.mjobb.service.AprioriService;
 import com.mjobb.service.JobAdvertisementService;
+import com.sipios.springsearch.anotation.SearchSpec;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -82,7 +84,10 @@ public class JobAdvertisementController {
     public ResponseEntity<List<JobAdvertisement>> getAllJobsByCategoryId(@PathVariable(value = "categoryId") Long categoryId) {
         return new ResponseEntity<>(jobAdvertisementService.getAllJobsByCategoryId(categoryId), HttpStatus.OK);
     }
-
+    @GetMapping("/searchUrl")
+    ResponseEntity<List<JobAdvertisement>> getSearch(@SearchSpec Specification<JobAdvertisement> specs) {
+      return new ResponseEntity<>(jobAdvertisementService.findAll(Specification.where(specs)), HttpStatus.OK);
+    }
     @GetMapping("category/{id}")
     public ResponseEntity<JobAdvertisement> getJobByCategoryId(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(jobAdvertisementService.getJobByCategoryId(id), HttpStatus.OK);

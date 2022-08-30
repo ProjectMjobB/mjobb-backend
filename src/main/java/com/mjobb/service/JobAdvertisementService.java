@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.mjobb.request.AddTagRequest;
 import com.mjobb.response.JobAdvertisementResponse;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -63,4 +64,6 @@ public interface JobAdvertisementService {
     List<User> getBestMatchUsersForJob(Long job_id);
 
     JobAdvertisementResponse getJobAdvertisementResponseById(long id);
+
+    List<JobAdvertisement> findAll(Specification<JobAdvertisement> where);
 }

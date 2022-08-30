@@ -3,12 +3,13 @@ package com.mjobb.repository;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.JobType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-public interface JobAdvertisementRepository extends JpaRepository<JobAdvertisement, Long> {
+public interface JobAdvertisementRepository extends JpaRepository<JobAdvertisement, Long>, JpaSpecificationExecutor<JobAdvertisement> {
 
     List<JobAdvertisement> findAllByAccepted(boolean accepted);
     List<JobAdvertisement> findJobAdvertisementByTagsId(Long tagId);
