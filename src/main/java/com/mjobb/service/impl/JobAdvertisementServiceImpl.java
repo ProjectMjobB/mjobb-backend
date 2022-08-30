@@ -294,6 +294,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         Date date = new Date();
         JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(id)
                 .orElseThrow(() -> new WebServiceException("Not found Tutorial with id = " + id));
+        JobType jobType = jobTypeRepository.findById(jobAdvertisement.getJobType().getId()).orElseThrow(() -> new WebServiceException("Not found JobType with id = " + jobAdvertisement.getJobType().getId()));
        JobAdvertisementResponse response = new JobAdvertisementResponse();
           response.setId(jobAdvertisement.getId());
             response.setTitle(jobAdvertisement.getTitle());
@@ -303,7 +304,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             response.setMaximumSalary(jobAdvertisement.getMaximumSalary());
             response.setFile(jobAdvertisement.getFile());
             response.setDescription(jobAdvertisement.getDescription());
-            response.setJobType(jobAdvertisement.getJobType());
+            response.setJobType(jobType.getName());
             response.setWorkingType(jobAdvertisement.getWorkingType());
             response.setCountry(jobAdvertisement.getCountry());
             response.setCity(jobAdvertisement.getCity());

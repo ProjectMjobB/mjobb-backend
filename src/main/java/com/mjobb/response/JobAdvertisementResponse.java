@@ -25,7 +25,7 @@ public class JobAdvertisementResponse {
     private BigDecimal maximumSalary;
     private String file;
     private String description;
-    private JobType jobType;
+    private String jobType;
     private String workingType;
     private String country;
     private String city;
