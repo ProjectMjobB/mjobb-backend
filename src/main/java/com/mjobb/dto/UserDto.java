@@ -27,15 +27,17 @@ public class UserDto {
     private String city;
     @ApiModelProperty(notes = "Company website", example = "User website information", required = false)
     private String website;
+    @ApiModelProperty(notes = "requestedWorkingType", example = "requestedWorkingType", required = false)
+    private String requestedWorkingType;
     @ApiModelProperty(notes = "Company fd", example = "User fd information", required = false)
     private String foundationDate;
     @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
     private int yearsOfExperience;
-    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
-    private BigDecimal minimumSalary;
-    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
-    private BigDecimal maximumSalary;
-    @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
+    @ApiModelProperty(notes = "requestedSalary", example = "requestedSalary", required = false)
+    private BigDecimal requestedSalary;
+    @ApiModelProperty(notes = "currentSalary", example = "currentSalary", required = false)
+    private BigDecimal currentSalary;
+    @ApiModelProperty(notes = "currentSalary", example = "currentSalary", required = false)
     private String workingArea;
     @ApiModelProperty(notes = "Profile Image", example = "Profile Image", required = false)
     private Long age;
