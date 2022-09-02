@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstname());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEnabled(false);
 
 
         Role role = roleRepository.findByName(requestRole).orElseThrow(() -> new RoleNotFoundException("This role no found. -> " + RoleEnum.EMPLOYEE.code()));
@@ -178,6 +179,15 @@ public class UserServiceImpl implements UserService {
         roles.add(employee);
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    @Override
+    public void verifyUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        });
+        user.setEnabled(true);
+        save(user);
     }
 
 

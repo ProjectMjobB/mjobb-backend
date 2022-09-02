@@ -41,4 +41,6 @@ public interface UserService {
 
     void promoteToEmployee(Long userId);
 
+    void verifyUser(Long userId);
+
 }

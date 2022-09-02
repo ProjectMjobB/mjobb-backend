@@ -32,6 +32,13 @@ public class AdminController {
         return ResponseEntity.ok(commentService.pendingApprovalComments());
     }
 
+    @PutMapping("user/{userId}/verify")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<User> verifyUser(@PathVariable Long userId) {
+        userService.verifyUser(userId);
+        return ResponseEntity.ok(userService.getUserById(userId));
+    }
+
 
     @PostMapping("comments/{comment_id}/approve")
     @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
