@@ -85,7 +85,9 @@ public class AprioriServiceImpl implements AprioriService {
             allJobsByAllEmpArr.add(employeeService.getAppliedJobIdsAdvertisementIdsForUser(e.getId()));
         }
 
-        System.out.println(allJobsByAllEmpArr);
+
+
+        System.out.println("allJobsByAllEmpArr = "+allJobsByAllEmpArr);
 
     }
 

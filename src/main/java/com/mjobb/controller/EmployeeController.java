@@ -5,6 +5,7 @@ import com.mjobb.entity.Employee;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.Language;
 import com.mjobb.mapper.CustomModelMapper;
+import com.mjobb.response.JobAdvertisementResponse;
 import com.mjobb.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class EmployeeController {
 
     @GetMapping("history/job-advertisements")
     @Secured({"ROLE_EMPLOYEE"})
-    public ResponseEntity<List<JobAdvertisementDto>> getAppliedJobAdvertisementsForCurrentUser() {
-        return ResponseEntity.accepted().body(customModelMapper.mapList(employeeService.getAppliedJobAdvertisementsForCurrentUser(), JobAdvertisementDto.class));
+    public ResponseEntity<List<JobAdvertisementResponse>> getAppliedJobAdvertisementsForCurrentUser() {
+        return ResponseEntity.accepted().body(employeeService.getAppliedJobAdvertisementsForCurrentUser());
     }
 
     @PostMapping("add-language")

@@ -1,14 +1,14 @@
 package com.mjobb.service;
 
 import com.mjobb.entity.Employee;
-import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.Language;
+import com.mjobb.response.JobAdvertisementResponse;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    List<JobAdvertisement> getAppliedJobAdvertisementsForCurrentUser();
+    List<JobAdvertisementResponse> getAppliedJobAdvertisementsForCurrentUser();
 
     List<Long> getAppliedJobAdvertisementIdsForUser(long id);
 
