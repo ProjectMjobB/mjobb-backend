@@ -61,7 +61,6 @@ public class JobAdvertisementController {
         return ResponseEntity.ok(jobAdvertisementService.getMyCreatedJobs());
     }
     @GetMapping("all-jobs")
-    @Secured({"ROLE_COMPANY"})
     public ResponseEntity<List<JobAdvertisement>> getAllJobs() {
        List<JobAdvertisement> jobs = jobAdvertisementService.getAllJobs();
         if (jobs.isEmpty()) {
