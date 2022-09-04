@@ -379,6 +379,7 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                 .jobAdvertisement(job)
                 .employee(employee)
                 .build();
+        application.setAccepted(true);
 
 
         applicationRepository.save(application);
