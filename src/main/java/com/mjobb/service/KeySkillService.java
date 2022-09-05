@@ -11,7 +11,7 @@ public interface KeySkillService {
 
     KeySkill updateKeySkill(long id, KeySkill keySkillRequest);
 
-    void deleteKeySkill(long id);
+    List<KeySkill> deleteKeySkill(long id);
 
     List<KeySkill> getAllKeySkillsByResumeId(Long resumeId);
 

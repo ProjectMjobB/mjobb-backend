@@ -34,9 +34,9 @@ public class CompanyHistoryController {
         return new ResponseEntity<>(companyHistoryService.updateCompanyHistory(id,companyHistoryRequest), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteCompanyHistory(@PathVariable("id") long id) {
-        companyHistoryService.deleteCompanyHistory(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<List<CompanyHistory>> deleteCompanyHistory(@PathVariable("id") long id) {
+
+        return new ResponseEntity<>(companyHistoryService.deleteCompanyHistory(id), HttpStatus.OK);
     }
     @GetMapping("/resume/{resumeId}/company-history")
     public ResponseEntity<List<CompanyHistory>> getAllCompanyHistoriesByResumeId(@PathVariable(value = "resumeId") Long resumeId) {

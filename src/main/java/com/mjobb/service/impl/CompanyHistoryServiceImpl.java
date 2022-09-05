@@ -1,9 +1,7 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.entity.CompanyHistory;
-import com.mjobb.entity.KeySkill;
 import com.mjobb.repository.CompanyHistoryRepository;
-import com.mjobb.repository.KeySkillRepository;
 import com.mjobb.repository.ResumeRepository;
 import com.mjobb.service.CompanyHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +39,9 @@ public class CompanyHistoryServiceImpl implements CompanyHistoryService {
     }
 
     @Override
-    public void deleteCompanyHistory(long id) {
+    public List<CompanyHistory> deleteCompanyHistory(long id) {
         companyHistoryRepository.deleteById(id);
+        return companyHistoryRepository.findAll();
     }
 
     @Override

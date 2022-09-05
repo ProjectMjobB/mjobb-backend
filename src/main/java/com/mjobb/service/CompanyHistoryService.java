@@ -9,7 +9,7 @@ public interface CompanyHistoryService {
 
     CompanyHistory updateCompanyHistory(long id, CompanyHistory companyHistoryRequest);
 
-    void deleteCompanyHistory(long id);
+    List<CompanyHistory> deleteCompanyHistory(long id);
 
     List<CompanyHistory> getAllCompanyHistoriesByResumeId(Long resumeId);
 

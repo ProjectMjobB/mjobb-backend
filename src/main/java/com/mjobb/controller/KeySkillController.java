@@ -38,9 +38,9 @@ public class KeySkillController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteKeySkill(@PathVariable("id") long id) {
-        keySkillService.deleteKeySkill(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<List<KeySkill>> deleteKeySkill(@PathVariable("id") long id) {
+
+        return new ResponseEntity<>(keySkillService.deleteKeySkill(id), HttpStatus.OK);
     }
     @GetMapping("/resume/{resumeId}/key-skills")
     public ResponseEntity<List<KeySkill>> getAllKeySkillsByResumeId(@PathVariable(value = "resumeId") Long resumeId) {

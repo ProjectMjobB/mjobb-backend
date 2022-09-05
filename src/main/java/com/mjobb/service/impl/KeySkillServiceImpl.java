@@ -39,8 +39,9 @@ public class KeySkillServiceImpl implements KeySkillService {
     }
 
     @Override
-    public void deleteKeySkill(long id) {
+    public List<KeySkill> deleteKeySkill(long id) {
         keySkillRepository.deleteById(id);
+        return keySkillRepository.findAll();
     }
 
     @Override
