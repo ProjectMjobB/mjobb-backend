@@ -43,4 +43,8 @@ public class CompanyHistoryController {
 
         return new ResponseEntity<>(companyHistoryService.getAllCompanyHistoriesByResumeId(resumeId), HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyHistory> getCompanyHistoryById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(companyHistoryService.getCompanyHistoryById(id), HttpStatus.OK);
+    }
 }

@@ -54,4 +54,11 @@ public class CompanyHistoryServiceImpl implements CompanyHistoryService {
         return companyHistories;
     }
 
+    @Override
+    public CompanyHistory getCompanyHistoryById(long id) {
+        CompanyHistory companyHistory = companyHistoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Company History " + id + "not found"));
+        return companyHistory;
+    }
+
 }

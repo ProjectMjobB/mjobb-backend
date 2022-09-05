@@ -12,4 +12,6 @@ public interface CompanyHistoryService {
     void deleteCompanyHistory(long id);
 
     List<CompanyHistory> getAllCompanyHistoriesByResumeId(Long resumeId);
+
+    CompanyHistory getCompanyHistoryById(long id);
 }
