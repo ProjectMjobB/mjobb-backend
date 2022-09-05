@@ -43,5 +43,5 @@ public interface UserService {
 
     void verifyUser(Long userId);
 
-    List<List<User>> getUsersByRole();
+    List<User> getUsersByRole();
 }

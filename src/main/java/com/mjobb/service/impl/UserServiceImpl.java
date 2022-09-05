@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<List<User>> getUsersByRole() {
+    public List<User> getUsersByRole() {
 
         List<User> employees = userRepository.findAllByRoles(roleRepository.findByName("ROLE_EMPLOYEE").orElseThrow(() -> {
             throw new WebServiceException("EMPLOYEE role not found");
@@ -198,10 +198,21 @@ public class UserServiceImpl implements UserService {
             List<User> companies = userRepository.findAllByRoles(roleRepository.findByName("ROLE_COMPANY").orElseThrow(() -> {
                 throw new WebServiceException("EMPLOYEE role not found");
             }));
+            List<User> moderators = userRepository.findAllByRoles(roleRepository.findByName("ROLE_MODERATOR").orElseThrow(() -> {
+                throw new WebServiceException("EMPLOYEE role not found");
+            }));
+        List<User> all = new ArrayList<>();
 
-        List<List<User>> all = new ArrayList<>();
-        all.add(employees);
-        all.add(companies);
+        for (User employee : employees) {
+            all.add(employee);
+        }
+        for (User company : companies) {
+            all.add(company);
+        }
+        for (User moderator : moderators) {
+            all.add(moderator);
+        }
+
         return all;
     }
 

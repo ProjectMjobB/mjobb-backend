@@ -73,7 +73,7 @@ public class UserController {
         return ResponseEntity.accepted().body(userService.getUserById(userId));
     }
     @GetMapping
-    public ResponseEntity<List<List<User>>> getAllEmployeesAndCompanies() {
+    public ResponseEntity<List<User>> getUsersExpectAdminRole() {
         return ResponseEntity.accepted().body(userService.getUsersByRole());
     }
 }
