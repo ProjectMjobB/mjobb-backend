@@ -156,6 +156,12 @@ public class CommentServiceImpl implements CommentService {
         return comments;
     }
 
+    @Override
+    public List<Comment> getAllComments() {
+
+        return commentRepository.findAll();
+    }
+
     private void calculateGeneralPoint(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new WebServiceException("Not found User with id = " + userId));
 

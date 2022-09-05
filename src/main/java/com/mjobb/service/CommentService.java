@@ -31,4 +31,5 @@ public interface CommentService {
 
     List<Comment> getAcceptedCommentsByFromUserId(Long userId);
 
+    List<Comment> getAllComments();
 }

@@ -23,6 +23,20 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @GetMapping
+    public ResponseEntity<List<Comment>> getAllComments() {
+        return new ResponseEntity<>(commentService.getAllComments(), HttpStatus.OK);
+    }
+    @PutMapping("/accept/{id}")
+    @Secured({"ROLE_MODERATOR","ROLE_ADMIN"})
+    public ResponseEntity<Comment> acceptComment(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(commentService.approveComment(id), HttpStatus.OK);
+    }
+    @PutMapping("/reject/{id}")
+    @Secured({"ROLE_MODERATOR","ROLE_ADMIN"})
+    public ResponseEntity<Comment> rejectComment(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(commentService.rejectComment(id), HttpStatus.OK);
+    }
     @GetMapping("/users/{userId}/to-user/all-comments")
     public ResponseEntity<List<CommentResponse>> getAllCommentsByToUserId(@PathVariable(value = "userId") Long userId) {
         return new ResponseEntity<>(commentService.getAllCommentsByToUserId(userId), HttpStatus.OK);
