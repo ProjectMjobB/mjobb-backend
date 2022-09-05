@@ -32,6 +32,11 @@ public class KeySkillController {
         return new ResponseEntity<>(keySkillService.updateKeySkill(id,keySkillRequest), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<KeySkill> getKeySkillById(@PathVariable("id") long id) {
+        return new ResponseEntity<>(keySkillService.getKeySkillById(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteKeySkill(@PathVariable("id") long id) {
         keySkillService.deleteKeySkill(id);

@@ -51,4 +51,11 @@ public class KeySkillServiceImpl implements KeySkillService {
         List<KeySkill> keySkills = keySkillRepository.findByResumeId(resumeId);
         return keySkills;
     }
+
+    @Override
+    public KeySkill getKeySkillById(long id) {
+        KeySkill keySkill = keySkillRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("KeySkillId " + id + "not found"));
+        return keySkill;
+    }
 }
