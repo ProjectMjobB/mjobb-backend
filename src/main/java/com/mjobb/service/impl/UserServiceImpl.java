@@ -1,12 +1,10 @@
 package com.mjobb.service.impl;
 
 import com.mjobb.dto.UserDto;
-import com.mjobb.entity.Company;
-import com.mjobb.entity.Employee;
-import com.mjobb.entity.Role;
-import com.mjobb.entity.User;
+import com.mjobb.entity.*;
 import com.mjobb.enums.RoleEnum;
 import com.mjobb.exception.*;
+import com.mjobb.repository.ResumeRepository;
 import com.mjobb.repository.RoleRepository;
 import com.mjobb.repository.UserRepository;
 import com.mjobb.request.ChangePasswordRequest;
@@ -20,10 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -33,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ResumeRepository resumeRepository;
 
     @Override
     public boolean existByEmail(String email) {
@@ -55,11 +51,14 @@ public class UserServiceImpl implements UserService {
             user = new User();
         }
         user.setEmail(request.getEmail());
-        user.setEnabled(true);
         user.setFirstName(request.getFirstname());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEnabled(false);
+        Resume resume = new Resume();
+        resume.setUserId(user.getId());
+        resumeRepository.save(resume);
+
 
 
         Role role = roleRepository.findByName(requestRole).orElseThrow(() -> new RoleNotFoundException("This role no found. -> " + RoleEnum.EMPLOYEE.code()));
@@ -188,6 +187,22 @@ public class UserServiceImpl implements UserService {
         });
         user.setEnabled(true);
         save(user);
+    }
+
+    @Override
+    public List<List<User>> getUsersByRole() {
+
+        List<User> employees = userRepository.findAllByRoles(roleRepository.findByName("ROLE_EMPLOYEE").orElseThrow(() -> {
+            throw new WebServiceException("EMPLOYEE role not found");
+            }));
+            List<User> companies = userRepository.findAllByRoles(roleRepository.findByName("ROLE_COMPANY").orElseThrow(() -> {
+                throw new WebServiceException("EMPLOYEE role not found");
+            }));
+
+        List<List<User>> all = new ArrayList<>();
+        all.add(employees);
+        all.add(companies);
+        return all;
     }
 
 

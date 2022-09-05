@@ -72,4 +72,8 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         return ResponseEntity.accepted().body(userService.getUserById(userId));
     }
+    @GetMapping
+    public ResponseEntity<List<List<User>>> getAllEmployeesAndCompanies() {
+        return ResponseEntity.accepted().body(userService.getUsersByRole());
+    }
 }
