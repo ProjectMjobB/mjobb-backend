@@ -3,6 +3,7 @@ package com.mjobb.service.impl;
 import com.mjobb.entity.Complaint;
 import com.mjobb.entity.JobAdvertisement;
 import com.mjobb.entity.User;
+import com.mjobb.repository.ComplaintRepository;
 import com.mjobb.request.ComplaintRequest;
 import com.mjobb.service.ComplaintService;
 import com.mjobb.service.JobAdvertisementService;
@@ -20,6 +21,8 @@ public class  ComplaintServiceImpl implements ComplaintService {
 
     private final UserService userService;
     private final JobAdvertisementService jobAdvertisementService;
+
+    private final ComplaintRepository complaintRepository;
 
     @Override
     public Complaint userComplaintToUser(ComplaintRequest request) {
@@ -52,6 +55,7 @@ public class  ComplaintServiceImpl implements ComplaintService {
 
     }
 
+
     @Override
     public Complaint userComplaintToJob(ComplaintRequest request) {
         User fromUser = userService.getCurrentUser();
@@ -77,4 +81,27 @@ public class  ComplaintServiceImpl implements ComplaintService {
 
         return complaint;
     }
+
+    @Override
+    public List<Complaint> getAllComplaints() {
+        return complaintRepository.findAll();
+    }
+
+    @Override
+    public Complaint acceptComplaint(Long id) {
+        Complaint complaint = complaintRepository.findById(id).orElse(null);
+        complaint.setAccepted(true);
+        complaintRepository.saveAndFlush(complaint);
+        return complaint;
+    }
+
+    @Override
+    public Complaint rejectComplaint(Long id) {
+        Complaint complaint = complaintRepository.findById(id).orElse(null);
+        complaint.setAccepted(false);
+        complaintRepository.saveAndFlush(complaint);
+        return complaint;
+    }
+
+
 }

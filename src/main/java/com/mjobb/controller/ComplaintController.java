@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1.0/complaints/")
 @RequiredArgsConstructor
@@ -30,5 +32,21 @@ public class ComplaintController {
     @Secured({"ROLE_EMPLOYEE"})
     public ResponseEntity<Complaint> userComplaintToJob(@RequestBody ComplaintRequest request) {
         return new ResponseEntity<>(complaintService.userComplaintToJob(request), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Complaint>> getAllComplaints() {
+        return new ResponseEntity<>(complaintService.getAllComplaints(), HttpStatus.OK);
+    }
+
+    @PutMapping("/accept/{id}")
+    @Secured({"ROLE_MODERATOR","ROLE_ADMIN"})
+    public ResponseEntity<Complaint> acceptComplaint(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(complaintService.acceptComplaint(id), HttpStatus.OK);
+    }
+    @PutMapping("/reject/{id}")
+    @Secured({"ROLE_MODERATOR","ROLE_ADMIN"})
+    public ResponseEntity<Complaint> rejectComplaint(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(complaintService.rejectComplaint(id), HttpStatus.OK);
     }
 }
