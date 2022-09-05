@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,13 +19,5 @@ public class Resume {
     private Long id;
     private String title;
     private String description;
-    private Long user_id;
-    @OneToMany
-    private List<KeySkill> keySkills;
-    @OneToMany
-    private List<CompanyHistory> companyHistories;
-    @OneToMany
-    private List<ProjectHistory> projectHistories;
-
-
+    private Long userId;
 }
