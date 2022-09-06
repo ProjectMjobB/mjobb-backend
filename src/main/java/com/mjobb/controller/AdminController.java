@@ -65,7 +65,17 @@ public class AdminController {
         jobAdvertisementService.approveJobs(comments);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("jobs/approve/{jobId}")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<JobAdvertisement> approveJob(@PathVariable Long jobId) {
+        return new ResponseEntity<>( jobAdvertisementService.approveJob(jobId),HttpStatus.OK);
+    }
 
+    @PostMapping("jobs/reject/{jobId}")
+    @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
+    public ResponseEntity<JobAdvertisement> rejectJob(@PathVariable Long jobId) {
+        return new ResponseEntity<>( jobAdvertisementService.rejectJob(jobId),HttpStatus.OK);
+    }
     @PostMapping("jobs/reject")
     @Secured({"ROLE_ADMIN", "ROLE_MODERATOR"})
     public ResponseEntity<Void> rejectJobs(@RequestBody List<JobAdvertisement> comments) {

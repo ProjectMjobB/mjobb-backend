@@ -66,4 +66,8 @@ public interface JobAdvertisementService {
     JobAdvertisementResponse getJobAdvertisementResponseById(long id);
 
     List<JobAdvertisement> findAll(Specification<JobAdvertisement> where);
+
+    JobAdvertisement approveJob(Long jobId);
+
+    JobAdvertisement rejectJob(Long jobId);
 }

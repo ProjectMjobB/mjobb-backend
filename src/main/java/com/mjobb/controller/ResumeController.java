@@ -28,8 +28,7 @@ public class ResumeController {
         return new ResponseEntity<>(resumeService.getResumeByEmpId(empId), HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Resume> updateResume(@PathVariable("id") long id,@RequestParam(name="title") String title,
-                                               @RequestParam(name="description") String description) {
-        return new ResponseEntity<>(resumeService.updateResume(id,title,description), HttpStatus.OK);
+    public ResponseEntity<Resume> updateResume(@PathVariable("id") long id,@RequestBody Resume resumeRequest) {
+        return new ResponseEntity<>(resumeService.updateResume(id,resumeRequest), HttpStatus.OK);
     }
 }

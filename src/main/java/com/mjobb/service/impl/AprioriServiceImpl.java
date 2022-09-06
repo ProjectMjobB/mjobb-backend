@@ -20,14 +20,15 @@ public class AprioriServiceImpl implements AprioriService {
     String newLine = System.getProperty("line.separator");
     int itemsCount,countItemOccurrence=0,displayFrequentItemSetNumber=2,displayTransactionNumber=1;
 
-    double minimumConfidence=0.45;
-    int minimumSupport=2;
+    double minimumConfidence=0.20;
+    int minimumSupport=4;
 
     private final JobAdvertisementService jobAdvertisementService;
     private final EmployeeService employeeService;
 
     public void display(int noOfTransactions, List<String> transactions)
     {
+
         for(int i = 0; i<noOfTransactions;i++)
         {
             String str = transactions.get(i);
@@ -78,16 +79,28 @@ public class AprioriServiceImpl implements AprioriService {
         List<String> employeeIds = new ArrayList<String>();
         List<Employee> employees = employeeService.getAllEmployees();
         List<List<Long>> allJobsByAllEmpArr = new ArrayList<>();
-        noOfTransactions = jobAdvertisementService.getAllJobs().size();
 
         for(Employee e : employees)
         {
             allJobsByAllEmpArr.add(employeeService.getAppliedJobIdsAdvertisementIdsForUser(e.getId()));
         }
+        for (List<Long> list : allJobsByAllEmpArr) {
 
+                String str = "";
+                if (list != null) {
+                    if(list.contains(jobId)) {
+                    for (Long i : list) {
+                        str += i + " ";
+                    }
+                    transactions.add(str);
+                }
+            }
+        }
+        noOfTransactions = transactions.size();
 
+       display(noOfTransactions,transactions);
 
-        System.out.println("allJobsByAllEmpArr = "+allJobsByAllEmpArr);
+        System.out.println("allJobsByAllEmpArr = "+transactions);
 
     }
 

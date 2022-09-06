@@ -21,11 +21,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Resume updateResume(long id,String title,String description) {
+    public Resume updateResume(long id,Resume resumeRequest) {
         Resume _resume = resumeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found Resume with id = " + id));
-        _resume.setTitle(title);
-        _resume.setDescription(description);
+        _resume.setTitle(resumeRequest.getTitle());
+        _resume.setDescription(resumeRequest.getDescription());
         resumeRepository.save(_resume);
         return _resume;
     }

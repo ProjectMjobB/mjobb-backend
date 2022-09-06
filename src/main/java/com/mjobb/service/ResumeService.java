@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 public interface ResumeService {
     Resume getResumeByEmpId(long id);
 
-    Resume updateResume(long id,String title,String description);
+    Resume updateResume(long id, Resume resumeRequest);
 }

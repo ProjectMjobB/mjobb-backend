@@ -331,6 +331,20 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         return jobAdvertisementRepository.findAll(Specification.where(where));
     }
 
+    @Override
+    public JobAdvertisement approveJob(Long jobId) {
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+        jobAdvertisement.setAccepted(true);
+        return jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
+    @Override
+    public JobAdvertisement rejectJob(Long jobId) {
+        JobAdvertisement jobAdvertisement = jobAdvertisementRepository.findById(jobId).orElseThrow(() -> new WebServiceException("Not found Job with id = " + jobId));
+        jobAdvertisement.setAccepted(false);
+        return jobAdvertisementRepository.save(jobAdvertisement);
+    }
+
 
     @Override
     public JobAdvertisement updateJobAdvertisement(long id, @RequestBody JobAdvertisement jobAdvertisement) {
