@@ -133,9 +133,8 @@ public class JobAdvertisementController {
     }
 
     @GetMapping("/{job_id}/apriori-algorithm")
-    public ResponseEntity<Void> getAprioriAlgorithm(@PathVariable Long job_id) {
-        aprioriService.setData(job_id);
-        return ResponseEntity.accepted().build();
+    public ResponseEntity<List<JobAdvertisement>> getAprioriAlgorithm(@PathVariable Long job_id) {
+        return new ResponseEntity<>(jobAdvertisementService.getAllJobs(), HttpStatus.OK);
     }
 
     @Secured({"ROLE_COMPANY","ROLE_ADMIN", "ROLE_MODERATOR"})
