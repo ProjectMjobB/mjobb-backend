@@ -1,2 +1,2 @@
-# mjobb-backend
-mjobb-backend app
+# Project mjobb
+Mjobb is a job seeking platform
